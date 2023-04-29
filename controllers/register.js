@@ -6,6 +6,7 @@ const postRegistro = (req , res) =>{
     const sql ="INSERT INTO usuario (`ID_Rol`,`Correo`,`contrasena`) VALUES (?)";
     bcrypt.hash(req.body.password.toString(), salt, (err, hash) =>{
         if(err) return res.json({Error: "Error for hassing password"});
+        
         const values =[
             req.body.Rol = 1,
             req.body.email,
