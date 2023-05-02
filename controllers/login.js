@@ -1,5 +1,7 @@
 const db = require("../database/db");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
+const cookieParser = require("cookie-parser")
 
 
 const postUsuario = (req, res) => {
@@ -15,7 +17,12 @@ const postUsuario = (req, res) => {
 
                 if (err) return res.json({ Error: "Password compare error" })
 
-                if (data[0].ID_Rol ==1 && response) {
+                if (data[0].ID_Rol == 1 && response) {
+
+                    const correo = data[0].Correo;
+                    const token = jwt.sign({ correo }, "jwt-scret-key", { expiresIn: '1d' });
+                    res.cookie('token', token);
+
                     return res.json({ Status: "Admin" });
 
                 } else {
