@@ -1,5 +1,6 @@
 const express = require("express")
 const cors = require('cors')
+const cookieParser = require("cookie-parser")
 const db = require('../database/db') // Incluir db connection
 
 class Server {
@@ -31,6 +32,7 @@ class Server {
         }));
         // Permite peticiones json a la API
         this.app.use(express.json());
+        this.app.use(cookieParser())
     }
 
     routes() {
