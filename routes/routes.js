@@ -1,20 +1,29 @@
-const { Router } = require('express')
-const router = Router()
+const { Router } = require('express');
+const router = Router();
 
-const {postUsuario } = require('../controllers/login')
-const {postRegistro } = require('../controllers/register')
-const {getInformacionDelCliente} = require('../controllers/prueba')
-const {authenticateToken} = require('../controllers/authenticateToken');
-const {logout} = require('../controllers/logout')
-const {listarPedidos} = require('../controllers/Pedido/listar')
-const {validarCorreo} = require('../controllers/reset')
+const {postUsuario } = require('../controllers/Acceso/login');
+const {postRegistro } = require('../controllers/Acceso/register');
+const {getInformacionDelCliente} = require('../controllers/prueba');
+const {authenticateToken} = require('../controllers/Acceso/authenticateToken');
+const {logout} = require('../controllers/Acceso/logout');
+const {listarPedidos} = require('../controllers/Pedido/listar');
+const {validarCorreo, actualizarPassword} = require('../controllers/Acceso/reset');
+const {validarToken} = require('../controllers/Validations/TokenValidator');
 
-router.post('/login',postUsuario)
-router.post('/register', postRegistro)
+
+//GET
 router.get('/prueba',authenticateToken, getInformacionDelCliente)
 router.get('/logout',logout)
 router.get('/admin/pedidos',listarPedidos)
+
+//POST
+router.post('/login',postUsuario)
+router.post('/register', postRegistro)
 router.post('/recuperar',validarCorreo)
+router.post('/recovery',validarToken)
+
+//PATCH
+router.patch('/actualizar',actualizarPassword)
 
 
 
