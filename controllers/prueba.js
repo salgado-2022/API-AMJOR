@@ -10,7 +10,6 @@ const getInformacionDelCliente = (req, res) => {
     try {
         const decoded = jwt.verify(token, "jwt-scret-key");
         const userId = decoded.userId;
-
         const sql = "SELECT * FROM usuario WHERE ID_Usuario = ?;";
         db.query(sql,[userId], (err, data) => {
             if (err) return res.status(500).json({ Error: "Server Error" });
