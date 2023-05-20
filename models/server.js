@@ -7,9 +7,8 @@ class Server {
     constructor() {
         this.app = express();
         this.port = process.env.PORT;
-
         this.usuarioPath = '/api/';
-
+        this.insumoPath = '/api/';
         this.middlewares();
         this.dbConectar();
         this.routes(); // Disparar el método routes
@@ -37,6 +36,7 @@ class Server {
 
     routes() {
         this.app.use(this.usuarioPath, require('../routes/routes'))
+        this.app.use(this.insumoPath, require('../routes/routes'))
     }
 
     listen() {
