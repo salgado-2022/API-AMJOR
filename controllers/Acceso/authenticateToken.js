@@ -18,4 +18,12 @@ const authenticateToken = (req, res, next) => {
     });
 };
 
-module.exports = { authenticateToken };
+const getUserId = (req) => req.userId; // Función para obtener el userId
+
+module.exports = {
+    authenticateToken,
+    getUserId,
+};
+
+
+
