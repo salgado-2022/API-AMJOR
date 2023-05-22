@@ -15,6 +15,7 @@ const {eliminarInsumo} = require('../controllers/Insumos/eliminarInsumo');
 const {validarCorreo, actualizarPassword} = require('../controllers/Acceso/reset');
 const {validarToken} = require('../controllers/Validations/TokenValidator');
 const {DetallePedido} = require('../controllers/Pedido/Detalle')
+const {DetalleAncheta} = require('../controllers/Pedido/DetalleInsumo')
 
 
 //GET
@@ -22,6 +23,7 @@ router.get('/prueba',authenticateToken, getInformacionDelCliente)
 router.get('/logout',logout)
 router.get('/admin/pedidos',listarPedidos)
 router.get('/admin/pedidos/detalle/:id',DetallePedido)
+router.get('/admin/pedidos/detalle/ancheta/:id',DetalleAncheta)
 router.get('/admin/insumos',listarInsumo)
 router.get('/admin/insumos/insullamada/:id',listarEdInsumo)
 
