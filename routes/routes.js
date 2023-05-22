@@ -16,7 +16,12 @@ const {editarInsumo} = require('../controllers/Insumos/editarInsumo');
 const {eliminarInsumo} = require('../controllers/Insumos/eliminarInsumo');
 
 //ANCHETAS
+const {listarAncheta} = require('../controllers/Anchetas/listarAncheta');
 const {postAncheta} = require('../controllers/Anchetas/crearAncheta');
+const {verInsumos} = require ('../controllers/Anchetas/verInsumos');
+const {listarEdAncheta} = require('../controllers/Anchetas/editarAncheta');
+const {editarAncheta} = require('../controllers/Anchetas/editarAncheta');
+const {eliminarAncheta} = require('../controllers/Anchetas/eliminarAncheta');
 
 const {validarCorreo, actualizarPassword} = require('../controllers/Acceso/reset');
 const {validarToken} = require('../controllers/Validations/TokenValidator');
@@ -30,7 +35,10 @@ router.get('/logout',logout)
 router.get('/admin/pedidos',listarPedidos)
 router.get('/admin/pedidos/detalle/:id',DetallePedido)
 router.get('/admin/pedidos/detalle/ancheta/:id',DetalleAncheta)
+router.get('/admin/anchetas',listarAncheta)
 router.get('/admin/insumos',listarInsumo)
+router.get('/admin/anchetas/insancheta/:id',verInsumos)
+router.get('/admin/anchetas/anchellamada/:id',listarEdAncheta)
 router.get('/admin/insumos/insullamada/:id',listarEdInsumo)
 
 //POST
@@ -45,9 +53,11 @@ router.post('/recovery',validarToken)
 router.patch('/actualizar',actualizarPassword)
 
 //PUT
+router.put('/admin/anchetas/anchetaedit/:id',editarAncheta)
 router.put('/admin/insumos/insumoedit/:id',editarInsumo)
 
 //DELETE
 router.delete('/admin/insumos/insumodel/:id',eliminarInsumo)
+router.delete('/admin/anchetas/anchetadel/:id',eliminarAncheta)
 
 module.exports = router
