@@ -7,11 +7,17 @@ const {getInformacionDelCliente} = require('../controllers/prueba');
 const {authenticateToken} = require('../controllers/Acceso/authenticateToken');
 const {logout} = require('../controllers/Acceso/logout');
 const {listarPedidos} = require('../controllers/Pedido/listar');
+
+//INSUMOS
 const {listarInsumo} = require('../controllers/Insumos/listarInsumo');
 const {postInsumo } = require('../controllers/Insumos/crearInsumo');
 const {listarEdInsumo} = require('../controllers/Insumos/editarInsumo');
 const {editarInsumo} = require('../controllers/Insumos/editarInsumo');
 const {eliminarInsumo} = require('../controllers/Insumos/eliminarInsumo');
+
+//ANCHETAS
+const {postAncheta} = require('../controllers/Anchetas/crearAncheta');
+
 const {validarCorreo, actualizarPassword} = require('../controllers/Acceso/reset');
 const {validarToken} = require('../controllers/Validations/TokenValidator');
 const {DetallePedido} = require('../controllers/Pedido/Detalle')
@@ -29,6 +35,7 @@ router.get('/admin/insumos/insullamada/:id',listarEdInsumo)
 router.post('/login',postUsuario)
 router.post('/register', postRegistro)
 router.post('/crearInsumo', postInsumo)
+router.post('/crearAncheta', postAncheta)
 router.post('/recuperar',validarCorreo)
 router.post('/recovery',validarToken)
 
