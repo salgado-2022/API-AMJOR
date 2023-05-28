@@ -8,7 +8,7 @@ const postUsuario = (req, res) => {
 
     db.query(sql, [req.body.email], (err, data) => {
 
-        if (err) return res.json("Login Error in Server");
+        if (err) return res.status(500).json("Login Error in Server");
 
         if (data.length > 0) {
             bcrypt.compare(req.body.password.toString(), data[0].contrasena, (err, response) => {

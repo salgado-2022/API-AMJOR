@@ -25,6 +25,7 @@ const {eliminarAncheta} = require('../controllers/Anchetas/eliminarAncheta');
 
 const {validarCorreo, actualizarPassword} = require('../controllers/Acceso/reset');
 const {validarToken} = require('../controllers/Validations/TokenValidator');
+const {aceptar} = require('../controllers/Pedido/Aceptar')
 const {DetallePedido} = require('../controllers/Pedido/Detalle')
 const {DetalleAncheta} = require('../controllers/Pedido/DetalleInsumo')
 
@@ -40,6 +41,7 @@ router.get('/admin/insumos',listarInsumo)
 router.get('/admin/anchetas/insancheta/:id',verInsumos)
 router.get('/admin/anchetas/anchellamada/:id',listarEdAncheta)
 router.get('/admin/insumos/insullamada/:id',listarEdInsumo)
+router.get('/admin/pedidos/success/',aceptar)
 
 //POST
 router.post('/login',postUsuario)
