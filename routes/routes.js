@@ -17,7 +17,7 @@ const {eliminarInsumo} = require('../controllers/Insumos/eliminarInsumo');
 
 //ANCHETAS
 const {listarAncheta} = require('../controllers/Anchetas/listarAncheta');
-const {postAncheta, postImagen} = require('../controllers/Anchetas/crearAncheta');
+const {postAncheta} = require('../controllers/Anchetas/crearAncheta');
 const {verInsumos} = require ('../controllers/Anchetas/verInsumos');
 const {listarEdAncheta, editarAncheta} = require('../controllers/Anchetas/editarAncheta');
 const {eliminarAncheta} = require('../controllers/Anchetas/eliminarAncheta');
@@ -26,7 +26,7 @@ const {validarCorreo, actualizarPassword} = require('../controllers/Acceso/reset
 const {validarToken} = require('../controllers/Validations/TokenValidator');
 const {aceptar} = require('../controllers/Pedido/Aceptar')
 const {DetallePedido} = require('../controllers/Pedido/Detalle')
-const {DetalleAncheta} = require('../controllers/Pedido/DetalleInsumo')
+const {DetalleAncheta} = require('../controllers/Pedido/DetalleInsumo');
 
 
 //GET
@@ -47,7 +47,6 @@ router.post('/login',postUsuario)
 router.post('/register', postRegistro)
 router.post('/crearInsumo', postInsumo)
 router.post('/crearAncheta', postAncheta)
-router.post('/upload', postImagen)
 router.post('/recuperar',validarCorreo)
 router.post('/recovery',validarToken)
 
