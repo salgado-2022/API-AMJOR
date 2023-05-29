@@ -1,6 +1,5 @@
 const mysql = require('mysql');
 
-
 const db = mysql.createConnection({
     host: 'localhost',
     database: 'amjor',
@@ -8,6 +7,7 @@ const db = mysql.createConnection({
     password: '',
     port: 3306,
 })
+
 
 
 module.exports = db

@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const router = Router();
 
+
 const {postUsuario } = require('../controllers/Acceso/login');
 const {postRegistro } = require('../controllers/Acceso/register');
 const {getInformacionDelCliente} = require('../controllers/prueba');
@@ -11,16 +12,14 @@ const {listarPedidos} = require('../controllers/Pedido/listar');
 //INSUMOS
 const {listarInsumo} = require('../controllers/Insumos/listarInsumo');
 const {postInsumo } = require('../controllers/Insumos/crearInsumo');
-const {listarEdInsumo} = require('../controllers/Insumos/editarInsumo');
-const {editarInsumo} = require('../controllers/Insumos/editarInsumo');
+const {listarEdInsumo, editarInsumo} = require('../controllers/Insumos/editarInsumo');
 const {eliminarInsumo} = require('../controllers/Insumos/eliminarInsumo');
 
 //ANCHETAS
 const {listarAncheta} = require('../controllers/Anchetas/listarAncheta');
-const {postAncheta} = require('../controllers/Anchetas/crearAncheta');
+const {postAncheta, postImagen} = require('../controllers/Anchetas/crearAncheta');
 const {verInsumos} = require ('../controllers/Anchetas/verInsumos');
-const {listarEdAncheta} = require('../controllers/Anchetas/editarAncheta');
-const {editarAncheta} = require('../controllers/Anchetas/editarAncheta');
+const {listarEdAncheta, editarAncheta} = require('../controllers/Anchetas/editarAncheta');
 const {eliminarAncheta} = require('../controllers/Anchetas/eliminarAncheta');
 
 const {validarCorreo, actualizarPassword} = require('../controllers/Acceso/reset');
@@ -48,6 +47,7 @@ router.post('/login',postUsuario)
 router.post('/register', postRegistro)
 router.post('/crearInsumo', postInsumo)
 router.post('/crearAncheta', postAncheta)
+router.post('/upload', postImagen)
 router.post('/recuperar',validarCorreo)
 router.post('/recovery',validarToken)
 
