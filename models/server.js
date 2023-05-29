@@ -1,6 +1,7 @@
 const express = require("express")
 const cors = require('cors')
 const cookieParser = require("cookie-parser")
+const upload = require('./multerConfig');
 const db = require('../database/db') // Incluir db connection
 
 class Server {
@@ -30,7 +31,8 @@ class Server {
         }));
         // Permite peticiones json a la API
         this.app.use(express.json());
-        this.app.use(cookieParser())
+        this.app.use(cookieParser());
+        this.app.use(upload.single('image'));
     }
 
     routes() {

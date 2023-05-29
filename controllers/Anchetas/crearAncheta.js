@@ -1,4 +1,5 @@
 const db = require("../../database/db");
+const upload = require('../../models/multerConfig');
 
 const postAncheta = (req , res) =>{
 
@@ -13,9 +14,23 @@ const postAncheta = (req , res) =>{
     db.query(sql, [values] , (err, result ) => {
         if(err) return res.json({Error: " Inserting data error in server "});
         return res.json({Status: "Success"});
-
     })
 
 }
 
-module.exports = {postAncheta}
+const postImagen = (req, res) => {
+    upload.single('image')(req, res, (err) => {
+      const image = req.file.filename;
+      const sql ="UPDATE ancheta SET image = ?";
+      db.query(sql, [image] , (err, result ) => {
+        if (err) {
+            console.error(err);
+            return res.json({ Error: "Error uploading file" });
+        }
+        console.log(req.file);
+        return res.json({Status: "Success"});
+    })
+});
+};
+
+module.exports = {postAncheta, postImagen}
