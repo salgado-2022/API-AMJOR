@@ -26,7 +26,7 @@ class Server {
     middlewares() {
         this.app.use(cors({
             origin: ["http://localhost:3000"],
-            methods: ["POST", "GET", "PUT", "DELETE"],
+            methods: ["POST", "GET", "PUT", "DELETE", "PATCH"],
             credentials: true
         }));
         // Permite peticiones json a la API
