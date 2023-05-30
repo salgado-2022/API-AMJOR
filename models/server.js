@@ -33,6 +33,7 @@ class Server {
         this.app.use(express.json());
         this.app.use(cookieParser());
         this.app.use(upload.single('image'));
+        this.app.use(express.static('public'));
     }
 
     routes() {
