@@ -9,6 +9,11 @@ const {authenticateToken} = require('../controllers/Acceso/authenticateToken');
 const {logout} = require('../controllers/Acceso/logout');
 const {listarPedidos} = require('../controllers/Pedido/listar');
 
+//USUARIOS
+const { postCrearUsuario} = require('../controllers/Usuarios/crearUsuario');
+const {listarUsuario} = require('../controllers/Usuarios/listarUsuario');
+const {eliminarUsuario} = require('../controllers/Usuarios/eliminarUsuario');
+
 //INSUMOS
 const {listarInsumo} = require('../controllers/Insumos/listarInsumo');
 const {postInsumo } = require('../controllers/Insumos/crearInsumo');
@@ -41,6 +46,7 @@ router.get('/admin/anchetas/insancheta/:id',verInsumos)
 router.get('/admin/anchetas/anchellamada/:id',listarEdAncheta)
 router.get('/admin/insumos/insullamada/:id',listarEdInsumo)
 router.get('/admin/pedidos/success/',aceptar)
+router.get('/admin/usuario',listarUsuario)
 
 //POST
 router.post('/login',postUsuario)
@@ -49,6 +55,8 @@ router.post('/crearInsumo', postInsumo)
 router.post('/crearAncheta', postAncheta)
 router.post('/recuperar',validarCorreo)
 router.post('/recovery',validarToken)
+router.post('/crearUsuario',postCrearUsuario)
+
 
 //PATCH
 router.patch('/actualizar',actualizarPassword)
@@ -60,5 +68,6 @@ router.put('/admin/insumos/insumoedit/:id',editarInsumo)
 //DELETE
 router.delete('/admin/insumos/insumodel/:id',eliminarInsumo)
 router.delete('/admin/anchetas/anchetadel/:id',eliminarAncheta)
+router.delete('/admin/usuarios/Usuariodel/:id',eliminarUsuario)
 
 module.exports = router
