@@ -13,6 +13,7 @@ const {listarPedidos} = require('../controllers/Pedido/listar');
 const { postCrearUsuario} = require('../controllers/Usuarios/crearUsuario');
 const {listarUsuario} = require('../controllers/Usuarios/listarUsuario');
 const {eliminarUsuario} = require('../controllers/Usuarios/eliminarUsuario');
+const {listarEdUsuarios, editarUsuario} = require('../controllers/Usuarios/editarUsuario');
 
 //INSUMOS
 const {listarInsumo} = require('../controllers/Insumos/listarInsumo');
@@ -47,6 +48,7 @@ router.get('/admin/anchetas/anchellamada/:id',listarEdAncheta)
 router.get('/admin/insumos/insullamada/:id',listarEdInsumo)
 router.get('/admin/pedidos/success/',aceptar)
 router.get('/admin/usuario',listarUsuario)
+router.get('/admin/usuario/usullamada/:id',listarEdUsuarios)
 
 //POST
 router.post('/login',postUsuario)
@@ -64,6 +66,7 @@ router.patch('/actualizar',actualizarPassword)
 //PUT
 router.put('/admin/anchetas/anchetaedit/:id',editarAncheta)
 router.put('/admin/insumos/insumoedit/:id',editarInsumo)
+router.put('/admin/usuarios/usuariarioedit/:id', editarUsuario)
 
 //DELETE
 router.delete('/admin/insumos/insumodel/:id',eliminarInsumo)
