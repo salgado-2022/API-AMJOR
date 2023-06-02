@@ -1,14 +1,30 @@
 const db = require("../../database/db");
 
 
-const listarPedidos = (req, res) => {
+const listarPedidos = (io) => {
 
-    const sql = "SELECT P.ID_Pedido, c.ID_Cliente,C.Nombre AS Nombre_Cliente, P.Direccion_Entrega, P.Feche_Entrega, P.Precio_Total FROM pedido P JOIN cliente C ON P.ID_Cliente = C.ID_Cliente;"
-    db.query(sql, (err, result)=>{
-        if(err) return res.json({Message: "Error en el servidor "});
-        return res.json(result);
-    })
+    io.on('connection', socket => {
+        console.log("Conectado");
 
-}
+        const query = "SELECT P.ID_Pedido, c.ID_Cliente,C.Nombre AS Nombre_Cliente, P.Direccion_Entrega, P.Feche_Entrega, P.Precio_Total FROM pedido P JOIN cliente C ON P.ID_Cliente = C.ID_Cliente;";
+        const interval = setInterval(() => {
+            db.query(query, (err, result) => {
+                if (err) {
+                    console.error("Error en la consulta:", err);
+                    return;
+                }
+                socket.emit("Pedidos", result);
+            });
+        }, 500);
 
-module.exports ={listarPedidos}
+        socket.on('disconnect', () => {
+            console.log("Desconectado");
+            clearInterval(interval);
+        });
+    });
+
+};
+
+module.exports = {
+    listarPedidos
+};
