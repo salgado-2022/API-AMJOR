@@ -4,16 +4,13 @@ const salt = 10;
 
 const postCrearUsuario = (req , res) =>{
 
-    const Estado = 1
-
-    const sql ="INSERT INTO usuario (`correo`,`contrasena`,`Estado`,`ID_Rol`, `ID_Usuario`) VALUES (?)";
+    const sql ="INSERT INTO usuario (`correo`,`contrasena`,`ID_Rol`, `ID_Usuario`) VALUES (?)";
     bcrypt.hash(req.body.contrasena.toString(), salt, (err, hash) =>{
         if(err) return res.json({Error: "Error for hassing password"});
         
         const values =[
             req.body.correo,
             hash,
-            Estado,
             req.body.ID_Rol,
             req.body.ID_Usuario
         ]
