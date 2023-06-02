@@ -2,6 +2,9 @@ const express = require("express")
 const cors = require('cors')
 const cookieParser = require("cookie-parser")
 const upload = require('./multerConfig');
+const http = require('http');
+const socketio = require('socket.io');
+const {listarPedidos} = require('../controllers/Pedido/listar')
 const db = require('../database/db') // Incluir db connection
 
 class Server {
@@ -12,12 +15,19 @@ class Server {
         this.middlewares();
         this.dbConectar();
         this.routes(); // Disparar el método routes
+        this.server = http.createServer(this.app);
+        this.io = socketio(this.server, {
+            cors: {
+                origin: "*"
+            },
+        });
+        this.setupSocket();
     }
-    async dbConectar(){
-        await db.connect(function(err) {
-            if(err) {
+    async dbConectar() {
+        await db.connect(function (err) {
+            if (err) {
                 throw err
-            }else{
+            } else {
                 console.log("Conectado con la base de datos correctamente.");
             }
         })
@@ -40,11 +50,14 @@ class Server {
         this.app.use(this.usuarioPath, require('../routes/routes'))
     }
 
-    listen() {
+    setupSocket() {
+        listarPedidos(this.io);
+    }
 
-        this.app.listen(this.port, () => {
-            console.log(`Escuchando desde http://localhost:${this.port}`)
-        })
+    listen() {
+        this.server.listen(this.port, () => {
+            console.log(`Escuchando desde http://localhost:${this.port}`);
+        });
     }
 
 }
