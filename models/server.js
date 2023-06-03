@@ -42,8 +42,8 @@ class Server {
         // Permite peticiones json a la API
         this.app.use(express.json());
         this.app.use(cookieParser());
-        this.app.use(upload.single('image'));
         this.app.use(express.static('public'));
+        this.app.use(upload.single('image'));
     }
 
     routes() {
