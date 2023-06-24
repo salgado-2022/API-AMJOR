@@ -19,13 +19,13 @@ const { eliminarRol } = require('../controllers/Configuración/eliminarConfigura
 //USUARIOS
 const { postCrearUsuario} = require('../controllers/Usuarios/crearUsuario');
 const { listarUsuario} = require('../controllers/Usuarios/listarUsuario');
-const { listarEdUsuarios, editarUsuario } = require('../controllers/Usuarios/editarUsuario');
+const {listarEdUsuarios, editarUsuario } = require('../controllers/Usuarios/editarUsuario');
 const {eliminarUsuario} = require('../controllers/Usuarios/eliminarUsuario');
 
 
 //INSUMOS
 const {listarInsumo} = require('../controllers/Insumos/listarInsumo');
-const {postInsumo } = require('../controllers/Insumos/crearInsumo');
+const {postInsumo} = require('../controllers/Insumos/crearInsumo');
 const {listarEdInsumo, editarInsumo} = require('../controllers/Insumos/editarInsumo');
 const {eliminarInsumo} = require('../controllers/Insumos/eliminarInsumo');
 
