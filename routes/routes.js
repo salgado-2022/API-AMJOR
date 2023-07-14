@@ -10,10 +10,15 @@ const {logout} = require('../controllers/Acceso/logout');
 
 //CONFIGURACION
 const { postCrearRol } = require('../controllers/Configuración/crearRol');
+const { listarConfiguracion } = require('../controllers/Configuración/listarConfiguracion');
+const { listarEdRol, editarRol } = require('../controllers/Configuración/editarConfiguracion');
+const { eliminarRol } = require('../controllers/Configuración/eliminarConfiguracion');
+
+
 
 //USUARIOS
 const { postCrearUsuario} = require('../controllers/Usuarios/crearUsuario');
-const {listarUsuario} = require('../controllers/Usuarios/listarUsuario');
+const { listarUsuario} = require('../controllers/Usuarios/listarUsuario');
 const {listarEdUsuarios, editarUsuario } = require('../controllers/Usuarios/editarUsuario');
 const {eliminarUsuario} = require('../controllers/Usuarios/eliminarUsuario');
 
@@ -36,8 +41,6 @@ const {validarToken} = require('../controllers/Validations/TokenValidator');
 const {aceptar} = require('../controllers/Pedido/Aceptar')
 const {DetallePedido} = require('../controllers/Pedido/Detalle')
 const {DetalleAncheta} = require('../controllers/Pedido/DetalleInsumo');
-const { listarConfiguracion } = require('../controllers/Configuración/listarConfiguracion');
-const { eliminarRol } = require('../controllers/Configuración/eliminarConfiguracion');
 
 //GET
 router.get('/prueba',authenticateToken, getInformacionDelCliente)
@@ -53,6 +56,7 @@ router.get('/admin/pedidos/success/',aceptar)
 router.get('/admin/usuario',listarUsuario)
 router.get('/admin/usuario/usullamada/:id', listarEdUsuarios);
 router.get('/admin/configuracion', listarConfiguracion);
+router.get('/admin/configuracion/confillamada/:id', listarEdRol)
 
 //POST
 router.post('/login',postUsuario)
@@ -72,6 +76,7 @@ router.patch('/actualizar',actualizarPassword)
 router.put('/admin/anchetas/anchetaedit/:id',editarAncheta)
 router.put('/admin/insumos/insumoedit/:id',editarInsumo)
 router.put('/admin/usuario/usuariarioedit/:id', editarUsuario);
+router.put('/admin/configuracion/confiedit/:id', editarRol);
 
 //DELETE
 router.delete('/admin/insumos/insumodel/:id',eliminarInsumo)
