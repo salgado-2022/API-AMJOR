@@ -35,7 +35,7 @@ class Server {
 
     middlewares() {
         this.app.use(cors({
-            origin: ["http://localhost:3000"],
+            origin: ["http://localhost:3000", "http://localhost:3001"],
             methods: ["POST", "GET", "PUT", "DELETE", "PATCH"],
             credentials: true
         }));
