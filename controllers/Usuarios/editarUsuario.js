@@ -2,7 +2,7 @@ const db = require("../../database/db");
 const bcrypt = require("bcrypt");
 
 const listarEdUsuarios = (req, res) => {
-  const sql = "SELECT * FROM usuario WHERE ID_Usuario = ?";
+  const sql = "SELECT * FROM usuario WHERE idUsuario = ?";
   const id = req.params.id;
   db.query(sql, [id], (err, result) => {
     if (err) {
@@ -14,12 +14,12 @@ const listarEdUsuarios = (req, res) => {
 };
 
 const editarUsuario = (req, res) => {
-  const sql = "UPDATE usuario SET correo = ?, contrasena = ? WHERE ID_Usuario = ?";
+  const sql = "UPDATE usuario SET correo = ?, contrasena = ? WHERE idUsuario = ?";
   const id = req.params.id;
   const nuevoCorreo = req.body.correo;
   let nuevaContrasena = req.body.contrasena;
 
-  const obtenerContrasenaActual = "SELECT contrasena FROM usuario WHERE ID_Usuario = ?";
+  const obtenerContrasenaActual = "SELECT contrasena FROM usuario WHERE idUsuario = ?";
   db.query(obtenerContrasenaActual, [id], (err, result) => {
     if (err) {
       console.log(err);

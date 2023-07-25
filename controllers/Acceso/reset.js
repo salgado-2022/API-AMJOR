@@ -8,14 +8,14 @@ const salt = 10;
 
 const validarCorreo = (req, res) => {
     const email = req.body.email;
-    const sql = "SELECT * FROM usuario WHERE Correo = ?";
+    const sql = "SELECT * FROM usuario WHERE correo = ?";
 
     db.query(sql, [email], async (err, data) => {
         if (err) {
             return res.status(500).json({ error: "Error al realizar la consulta en la base de datos" });
         }
         if (data.length > 0) {
-            const userId = data[0].ID_Usuario;
+            const userId = data[0].idUsuario;
             const token = jwt.sign({ userId: userId }, 'secretKey', { expiresIn: '10m' });
 
             const transporter = nodemailer.createTransport({
@@ -24,15 +24,15 @@ const validarCorreo = (req, res) => {
                 secure: true,
                 auth: {
                     user: 'salgadojuam4@gmail.com',
-                    pass: 'vpfykdksxjnkfyeu'
+                    pass: 'vbhfxllcuvnmkcfq'
                 },
             });
 
-            const resetPasswordLink = `http://localhost:3000/restore/password?token=${token}`;
+            const resetPasswordLink = `http://localhost:3001/restore/password?token=${token}`;
 
             let info = await transporter.sendMail({
                 from: '"Reset Password" <salgadojuam4@gmail.com>', // sender address
-                to: data[0].Correo, // list of receivers
+                to: data[0].correo, // list of receivers
                 subject: "Hello ✔", // Subject line
                 text: "Hello world?", // plain text body
                 html: `<p>Hola, solicitaste un cambio de contraseña.</p><p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p><a href="${resetPasswordLink}">${resetPasswordLink}</a>`, // html body
@@ -59,7 +59,7 @@ const actualizarPassword = (req, res) => {
         const decodedToken = jwt.verify(token, 'secretKey');
         const { userId } = decodedToken;
         
-        const sql = "UPDATE usuario SET contrasena = ? WHERE ID_Usuario = ?"
+        const sql = "UPDATE usuario SET contrasena = ? WHERE idUsuario = ?"
         bcrypt.hash(req.body.password.toString(), salt, (err, hash) =>{
             if(err) return res.json({Error: "Error for hassing password"});
             db.query(sql, [hash,userId], (err, result) => {

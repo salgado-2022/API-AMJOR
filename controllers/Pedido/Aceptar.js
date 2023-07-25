@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 
 const aceptar = (req, res) => {
 
-    const sql = "SELECT c.Nombre, u.Correo FROM pedido p INNER JOIN cliente c ON p.ID_Cliente = c.ID_Cliente INNER JOIN usuario u ON c.ID_Usuario = u.ID_Usuario WHERE p.ID_Cliente = ? AND p.ID_Pedido=?;"
+    const sql = "SELECT c.Nombre, u.correo FROM pedido p INNER JOIN cliente c ON p.ID_Cliente = c.ID_Cliente INNER JOIN usuario u ON c.ID_Usuario = u.idUsuario WHERE p.ID_Cliente = ? AND p.ID_Pedido=?;"
 
     const { pedido, cliente } = req.query;
 
@@ -14,7 +14,7 @@ const aceptar = (req, res) => {
         }
         if (result.length > 0) {
 
-            const correo = result[0].Correo
+            const correo = result[0].correo
 
             const sql2 = "SELECT p.ID_PedidoAnch, a.NombreAncheta, p.Cantidad, p.Precio * p.Cantidad AS Total FROM pedido_ancheta p INNER JOIN ancheta a ON p.ID_Ancheta = a.ID_Ancheta WHERE p.ID_Pedido = ?"
             db.query(sql2, [pedido], async (error, resultado) => {
@@ -40,7 +40,7 @@ const aceptar = (req, res) => {
                     secure: true,
                     auth: {
                         user: 'salgadojuam4@gmail.com',
-                        pass: 'vpfykdksxjnkfyeu'
+                        pass: 'vbhfxllcuvnmkcfq'
                     },
                 });
 

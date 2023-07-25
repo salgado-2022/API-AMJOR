@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const salt = 10;
 
 const postRegistro = (req , res) =>{
-    const sql ="INSERT INTO usuario (`ID_Rol`,`Correo`,`contrasena`) VALUES (?)";
+    const sql ="INSERT INTO usuario (`ID_Rol`,`correo`,`contrasena`) VALUES (?)";
     bcrypt.hash(req.body.password.toString(), salt, (err, hash) =>{
         if(err) return res.json({Error: "Error for hassing password"});
         
