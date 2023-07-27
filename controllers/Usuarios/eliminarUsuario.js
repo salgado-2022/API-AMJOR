@@ -1,7 +1,7 @@
 const db = require("../../database/db");
 
 const eliminarUsuario = ( '/delete/:id', (req, res) =>{
-  const sql = "DELETE FROM usuario WHERE ID_Usuario = ?";
+  const sql = "DELETE FROM usuario WHERE idUsuario = ?";
   const id = req.params.id;
 
   db.query(sql, [id], (err, result) => {
