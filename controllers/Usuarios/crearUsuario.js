@@ -3,40 +3,40 @@ const bcrypt = require("bcrypt");
 const salt = 10;
 
 const postCrearUsuario = (req, res) => {
-  const { correo, contrasena, idUsuario } = req.body;
+  const { correo, contrasena } = req.body;
 
   // Validar que los campos no estén vacíos
-  if (!correo || !contrasena || !idUsuario) {
-    return res.json({ Error: "Please provide all the required fields." });
+  if (!correo || !contrasena) {
+    return res.json({ Error: "Porfavor complete los campos." });
   }
 
   // Validar el formato del correo electrónico
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(correo)) {
-    return res.json({ Error: "Please provide a valid email address." });
+    return res.json({ Error: "Ingrese datos correctos en el correo." });
   }
 
-  // Validar que la contraseña tenga al menos 8 caracteres y empiece con mayúscula
-  const passwordRegex = /^(?=.*[A-Z])[a-zA-Z0-9]{8,}$/;
+  // Validar que la contraseña tenga al menos 5 caracteres y empiece con mayúscula
+  const passwordRegex = /^(?=.*[A-Z])[a-zA-Z0-9]{5,}$/;
   if (!passwordRegex.test(contrasena)) {
     return res.json({
-      Error: "Password must be at least 8 characters long and start with an uppercase letter.",
+      Error: "La contraseña debe de tener minimo 5 caracteres y la primera letra debe de ser Mayuscula.",
     });
   }
 
   bcrypt.hash(contrasena.toString(), salt, (err, hash) => {
     if (err) {
-      return res.json({ Error: "Error while hashing password" });
+      return res.json({ Error: "Error en la contraseña" });
     }
 
-    const ID_Rol = 0;
+    const ID_Rol = 1; // Asignar el ID_Rol adecuado
 
     // Valores a insertar en la tabla usuario
-    const values = [correo, hash, ID_Rol, idUsuario];
+    const values = [correo, hash, ID_Rol];
 
     // Consulta SQL para insertar un nuevo registro en la tabla usuario
     const sqlInsertUsuario =
-      "INSERT INTO usuario (`correo`, `contrasena`, `ID_Rol`, `idUsuario`) VALUES (?)";
+      "INSERT INTO usuario (`correo`, `contrasena`, `ID_Rol`) VALUES (?)";
 
     // Ejecutar la consulta SQL con los valores proporcionados
     db.query(sqlInsertUsuario, [values], (err, result) => {
