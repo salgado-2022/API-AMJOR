@@ -17,7 +17,7 @@ const postUsuario = (req, res) => {
                 if (data[0].ID_Rol == 1 && response) {
                     const token = jwt.sign({ userId: data[0].idUsuario, Status: "Admin"}, "jwt-scret-key", { expiresIn: '1d' });
                     res.cookie('token', token);
-                    res.status(200).json({ Status: "Success", redirectTo: "http://localhost:3000/dashboard/app" })
+                    res.status(200).json({ Status: "Success", redirectTo: "http://localhost:3001/dashboard/app" })
                     
                 } else {
                     return res.json({ Error: "Password not matched" });
