@@ -28,7 +28,7 @@ const validarCorreo = (req, res) => {
                 },
             });
 
-            const resetPasswordLink = `http://localhost:3001/restore/password?token=${token}`;
+            const resetPasswordLink = `http://localhost:3000/restore/password?token=${token}`;
 
             let info = await transporter.sendMail({
                 from: '"Reset Password" <salgadojuam4@gmail.com>', // sender address

@@ -35,7 +35,7 @@ class Server {
 
     middlewares() {
         this.app.use(cors({
-            origin: ["http://localhost:3000", "http://localhost:3001"],
+            origin: ["http://localhost:3000","http://localhost:3001","https://heartfelt-bavarois-a44de2.netlify.app", "https://main--silver-muffin-e46c6e.netlify.app"],
             methods: ["POST", "GET", "PUT", "DELETE", "PATCH"],
             credentials: true
         }));
