@@ -7,6 +7,7 @@ const { postRegistro } = require('../controllers/Acceso/register');
 const { getInformacionDelCliente } = require('../controllers/prueba');
 const { authenticateToken } = require('../controllers/Acceso/authenticateToken');
 const { logout } = require('../controllers/Acceso/logout');
+const { searchUser} = require("../controllers/Acceso/login")
 
 //CONFIGURACION
 const { postCrearRol } = require('../controllers/Configuración/crearRol');
@@ -57,6 +58,7 @@ router.get('/admin/usuario', listarUsuario)
 router.get('/admin/usuario/usullamada/:id', listarEdUsuarios);
 router.get('/admin/configuracion', listarConfiguracion);
 router.get('/admin/configuracion/confillamada/:id', listarEdRol)
+router.get('/search/:token', searchUser);
 
 //POST
 router.post('/login', postUsuario)
