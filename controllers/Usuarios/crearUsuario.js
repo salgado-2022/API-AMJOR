@@ -14,18 +14,35 @@ const verificarCorreoExistente = (correo, callback) => {
   });
 };
 
+const verificarDocumentoExistente = (documento, callback) => {
+  const sql = "SELECT COUNT(*) AS count FROM cliente WHERE Documento = ?";
+  db.query(sql, [documento], (err, result) => {
+    if (err) {
+      console.log(err);
+      return callback(err);
+    }
+    const count = result[0].count;
+    return callback(null, count > 0);
+  });
+};
+
 const postCrearUsuario = (req, res) => {
-  const { correo, contrasena } = req.body;
+  const { correo, contrasena, documento, nombre, apellido, telefono } = req.body;
 
   // Validar que los campos no estén vacíos
-  if (!correo || !contrasena) {
-    return res.json({ Error: "Por favor complete los campos." });
+  if (!correo || !contrasena || !documento || !nombre || !apellido || !telefono) {
+    return res.json({ Error: "Por favor complete todos los campos." });
+  }
+
+  // Restricción de longitud y tipo para el campo "documento"
+  if (!/^\d{10}$/.test(documento)) {
+    return res.json({ Error: "El documento debe tener exactamente 10 dígitos numéricos." });
   }
 
   // Validar el formato del correo electrónico
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(correo)) {
-    return res.json({ Error: "Ingrese datos correctos en el correo." });
+    return res.json({ Error: "Ingrese un correo válido." });
   }
 
   // Validar que la contraseña tenga al menos 5 caracteres y empiece con mayúscula
@@ -33,42 +50,65 @@ const postCrearUsuario = (req, res) => {
   if (!passwordRegex.test(contrasena)) {
     return res.json({
       Error:
-        "La contraseña debe de tener mínimo 5 caracteres y la primera letra debe de ser Mayúscula.",
+        "La contraseña debe tener al menos 5 caracteres y comenzar con mayúscula.",
     });
   }
 
-  verificarCorreoExistente(correo, (err, existe) => {
+  verificarCorreoExistente(correo, (err, existeCorreo) => {
     if (err) {
       return res.json({ Error: "Error en el servidor." });
     }
 
-    if (existe) {
+    if (existeCorreo) {
       return res.json({ Error: "El correo ya está registrado." });
     }
 
-    bcrypt.hash(contrasena.toString(), salt, (err, hash) => {
+    verificarDocumentoExistente(documento, (err, existeDocumento) => {
       if (err) {
-        return res.json({ Error: "Error en la contraseña" });
+        return res.json({ Error: "Error en el servidor." });
       }
 
-      const ID_Rol = 1; // Asignar el ID_Rol adecuado
+      if (existeDocumento) {
+        return res.json({ Error: "El documento ya existe." });
+      }
 
-      // Valores a insertar en la tabla usuario
-      const values = [correo, hash, ID_Rol];
-
-      // Consulta SQL para insertar un nuevo registro en la tabla usuario
-      const sqlInsertUsuario =
-        "INSERT INTO usuario (`correo`, `contrasena`, `ID_Rol`) VALUES (?)";
-
-      // Ejecutar la consulta SQL con los valores proporcionados
-      db.query(sqlInsertUsuario, [values], (err, result) => {
+      bcrypt.hash(contrasena.toString(), salt, (err, hash) => {
         if (err) {
-          console.log(err);
-          return res.json({ Error: "Error insertando datos en el servidor" });
+          return res.json({ Error: "Error en la contraseña" });
         }
 
-        // Si la inserción se realizó correctamente, enviar una respuesta de éxito
-        return res.json({ Status: "Success" });
+        const ID_Rol = 1; // Asignar el ID_Rol adecuado
+
+        // Valores a insertar en la tabla usuario
+        const usuarioValues = [correo, hash, ID_Rol];
+
+        // Consulta SQL para insertar un nuevo registro en la tabla usuario
+        const sqlInsertUsuario =
+          "INSERT INTO usuario (`correo`, `contrasena`, `ID_Rol`) VALUES (?)";
+
+        db.query(sqlInsertUsuario, [usuarioValues], (err, usuarioResult) => {
+          if (err) {
+            console.log(err);
+            return res.json({ Error: "Error insertando datos en el servidor" });
+          }
+
+          // Inserción en la tabla cliente
+          const clienteValues = [documento, nombre, apellido, telefono, usuarioResult.insertId];
+
+          // Consulta SQL para insertar un nuevo registro en la tabla cliente
+          const sqlInsertCliente =
+            "INSERT INTO cliente (`Documento`, `Nombre`, `Apellido`, `Telefono`, `ID_Usuario`) VALUES (?)";
+
+          db.query(sqlInsertCliente, [clienteValues], (err, clienteResult) => {
+            if (err) {
+              console.log(err);
+              return res.json({ Error: "Error insertando datos en el servidor" });
+            }
+
+            // Si la inserción se realizó correctamente, enviar una respuesta de éxito
+            return res.json({ Status: "Success" });
+          });
+        });
       });
     });
   });

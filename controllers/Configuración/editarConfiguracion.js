@@ -14,7 +14,7 @@ const editarRol = (req, res) => {
   const id = req.params.id;
   const Nombre_Rol = req.body.Nombre_Rol;
 
-  db.query(sql, [nuevoRol, id], (err, result) => {
+  db.query(sql, [Nombre_Rol, id], (err, result) => {
     if (err) {
       console.log(err);
       return res.status(500).json({ Message: "Error en el servidor" });
