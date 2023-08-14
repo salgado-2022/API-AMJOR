@@ -9,6 +9,9 @@ const { authenticateToken } = require('../controllers/Acceso/authenticateToken')
 const { logout } = require('../controllers/Acceso/logout');
 const { searchUser} = require("../controllers/Acceso/login")
 
+// CARRITO
+const { enviarPedido } = require('../controllers/Carrito/enviarPedido');
+
 //CONFIGURACION
 const { postCrearRol } = require('../controllers/Configuración/crearRol');
 const { listarConfiguracion } = require('../controllers/Configuración/listarConfiguracion');
@@ -69,6 +72,8 @@ router.post('/recuperar', validarCorreo)
 router.post('/recovery', validarToken)
 router.post('/crearUsuario', postCrearUsuario)
 router.post('/crearRol', postCrearRol)
+
+router.post('/enviarPedido', enviarPedido)
 
 
 //PATCH
