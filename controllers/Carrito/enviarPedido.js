@@ -17,26 +17,32 @@ const enviarPedido = (req, res) => {
             const { ID_Ancheta, Cantidad, Insumos } = ancheta;
 
             // Insertar detalles de la ancheta en la tabla `pedido_ancheta`
-            const insertPedidoAnchetaQuery = "INSERT INTO pedido_ancheta (ID_Pedido, ID_Ancheta, Cantidad) VALUES (?, ?, ?)";
-            const pedidoAnchetaValues = [pedidoID, ID_Ancheta, Cantidad];
+            const insertPedidoAnchetaQuery = "INSERT INTO pedido_ancheta (ID_Pedido, ID_Ancheta, Cantidad, Precio) VALUES (?, ?, ?, ?)";
+            const precio = 4000
+            const pedidoAnchetaValues = [pedidoID, ID_Ancheta, Cantidad, precio];
 
             db.query(insertPedidoAnchetaQuery, pedidoAnchetaValues, (err) => {
+
                 if (err) console.error("Error al insertar detalle de pedido_ancheta:", err);
-            });
 
-            // Insertar detalles de insumos en la tabla `pedido_insumos_ancheta`
-            Insumos.forEach((insumo) => {
-                const { ID_Insumo, Cantidad: InsumoCantidad } = insumo;
-                const insertPedidoInsumoQuery = "INSERT INTO pedido_insumos_ancheta (ID_PedidoAnch, ID_Insumo, Cantidad) VALUES (?, ?, ?)";
-                const pedidoInsumoValues = [pedidoID, ID_Insumo, InsumoCantidad];
+                const IdAnchete = result.insertId;
 
-                db.query(insertPedidoInsumoQuery, pedidoInsumoValues, (err) => {
-                    if (err) console.error("Error al insertar detalle de pedido_insumos_ancheta:", err);
+                // Insertar detalles de insumos en la tabla `pedido_insumos_ancheta`
+                Insumos.forEach((insumo) => {
+                    const { ID_Insumo, Cantidad: InsumoCantidad } = insumo;
+                    const insertPedidoInsumoQuery = "INSERT INTO pedido_insumos_ancheta (ID_PedidoAnch, ID_Insumo, Cantidad, Precio) VALUES (?, ?, ?, ?)";
+                    const precio = 2000
+                    const pedidoInsumoValues = [IdAnchete, ID_Insumo, InsumoCantidad, precio];
+
+                    db.query(insertPedidoInsumoQuery, pedidoInsumoValues, (err) => {
+                        if (err) console.error("Error al insertar detalle de pedido_insumos_ancheta:", err);
+                    });
                 });
             });
+
         });
 
-        return res.json({ Status: "Pedido creado y enviado exitosamente." });    
+        return res.json({ Status: "Pedido creado y enviado exitosamente." });
     });
 };
 
