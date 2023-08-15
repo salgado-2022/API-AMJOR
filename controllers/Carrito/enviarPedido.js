@@ -21,18 +21,18 @@ const enviarPedido = (req, res) => {
             const precio = 4000
             const pedidoAnchetaValues = [pedidoID, ID_Ancheta, Cantidad, precio];
 
-            db.query(insertPedidoAnchetaQuery, pedidoAnchetaValues, (err) => {
+            db.query(insertPedidoAnchetaQuery, pedidoAnchetaValues, (err, resultado) => {
+
+                const ID_PedidoAnch = resultado.insertId
 
                 if (err) console.error("Error al insertar detalle de pedido_ancheta:", err);
-
-                const IdAnchete = result.insertId;
 
                 // Insertar detalles de insumos en la tabla `pedido_insumos_ancheta`
                 Insumos.forEach((insumo) => {
                     const { ID_Insumo, Cantidad: InsumoCantidad } = insumo;
                     const insertPedidoInsumoQuery = "INSERT INTO pedido_insumos_ancheta (ID_PedidoAnch, ID_Insumo, Cantidad, Precio) VALUES (?, ?, ?, ?)";
                     const precio = 2000
-                    const pedidoInsumoValues = [IdAnchete, ID_Insumo, InsumoCantidad, precio];
+                    const pedidoInsumoValues = [ID_PedidoAnch, ID_Insumo, InsumoCantidad, precio];
 
                     db.query(insertPedidoInsumoQuery, pedidoInsumoValues, (err) => {
                         if (err) console.error("Error al insertar detalle de pedido_insumos_ancheta:", err);
