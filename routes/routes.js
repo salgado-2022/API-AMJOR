@@ -12,9 +12,18 @@ const { searchUser} = require("../controllers/Acceso/login")
 // CARRITO
 const { enviarPedido } = require('../controllers/Carrito/enviarPedido');
 
+
+
+// DASHBOARD
+const { buscarCantidadPedidos } = require('../controllers/Dashboard/searchPedidos');
+const { buscarCantidadUsuarios } = require('../controllers/Dashboard/searchUsuarios');
+
+
+
 //CONFIGURACION
 const { postCrearRol } = require('../controllers/Configuración/crearRol');
 const { listarConfiguracion } = require('../controllers/Configuración/listarConfiguracion');
+const { listarPermisos } = require('../controllers/Configuración/listarPermisos');
 const { listarEdRol, editarRol } = require('../controllers/Configuración/editarConfiguracion');
 const { eliminarRol } = require('../controllers/Configuración/eliminarConfiguracion');
 
@@ -60,8 +69,12 @@ router.get('/admin/pedidos/success/', aceptar)
 router.get('/admin/usuario', listarUsuario)
 router.get('/admin/usuario/usullamada/:id', listarEdUsuarios);
 router.get('/admin/configuracion', listarConfiguracion);
+router.get('/admin/listpermisos', listarPermisos);
 router.get('/admin/configuracion/confillamada/:id', listarEdRol)
 router.get('/search/:token', searchUser);
+
+router.get('/admin/getinfo/totalpedidos', buscarCantidadPedidos)
+router.get('/admin/getinfo/totalusuarios', buscarCantidadUsuarios)
 
 //POST
 router.post('/login', postUsuario)
