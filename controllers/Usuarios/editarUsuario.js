@@ -20,11 +20,12 @@ const listarEdUsuarios = (req, res) => {
 };
 
 const editarUsuario = (req, res) => {
-  const sql = "UPDATE usuario SET correo = ?, contrasena = ?, ID_Rol = ? WHERE idUsuario = ?";
+  const sql = "UPDATE usuario SET correo = ?, contrasena = ?, ID_Rol = ?, Nombre_Rol = ? WHERE idUsuario = ?";
   const id = req.params.id;
   const nuevoCorreo = req.body.correo;
   let nuevaContrasena = req.body.contrasena;
   const nuevoID_Rol = req.body.ID_Rol;
+  const nuevoNombre_Rol = req.body.Nombre_Rol;
 
   const obtenerContrasenaActual = "SELECT contrasena FROM usuario WHERE idUsuario = ?";
   db.query(obtenerContrasenaActual, [id], (err, result) => {
@@ -53,7 +54,7 @@ const editarUsuario = (req, res) => {
   });
 
   const ejecutarActualizacion = () => {
-    db.query(sql, [nuevoCorreo, nuevaContrasena, nuevoID_Rol, id], (err, result) => {
+    db.query(sql, [nuevoCorreo, nuevaContrasena, nuevoID_Rol, nuevoNombre_Rol, id], (err, result) => {
       if (err) {
         console.log(err);
         return res.status(500).json({ Message: "Error en el servidor" });
