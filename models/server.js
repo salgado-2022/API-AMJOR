@@ -35,7 +35,7 @@ class Server {
 
     middlewares() {
         this.app.use(cors({
-            origin: ["http://localhost:3000","http://localhost:3001","https://heartfelt-bavarois-a44de2.netlify.app", "https://main--silver-muffin-e46c6e.netlify.app"],
+            origin: ["http://localhost:3000","http://localhost:3001"],
             methods: ["POST", "GET", "PUT", "DELETE", "PATCH"],
             credentials: true
         }));
@@ -56,7 +56,7 @@ class Server {
 
     listen() {
         this.server.listen(this.port, () => {
-            console.log(`Escuchando desde http://localhost:${this.port}`);
+            console.log(`Escuchando desde http://${process.env.API_URL}:${this.port}`);
         });
     }
 
