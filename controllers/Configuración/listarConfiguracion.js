@@ -1,7 +1,12 @@
 const db = require("../../database/db");
 
 const listarConfiguracion = (req, res) => {
-  const sql = "SELECT R.ID_Rol, R.Nombre_Rol FROM rol R ORDER BY R.ID_Rol ASC";
+  const sql = `
+    SELECT R.ID_Rol, R.Nombre_Rol, R.estado
+    FROM rol R
+    WHERE R.estado = 1
+    ORDER BY R.ID_Rol ASC
+  `;
 
   db.query(sql, (err, result) => {
     if (err) {
