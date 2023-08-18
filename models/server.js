@@ -35,7 +35,7 @@ class Server {
 
     middlewares() {
         this.app.use(cors({
-            origin: ["https://amjor.shop","https://www.amjor.shop","https://dashboard.amjor.shop","http://34.173.120.70","http://34.173.120.70:80","http://34.173.120.70:3000","http://34.173.120.70:3001","http://localhost:3000","http://localhost:3001"],
+            origin: ["https://amjor.shop","https://www.amjor.shop","https://dashboard.amjor.shop","https//www.dashboard.amjor.shop","http://34.173.120.70","http://34.173.120.70:80","http://34.173.120.70:3000","http://34.173.120.70:3001","http://localhost:3000","http://localhost:3001"],
             methods: ["POST", "GET", "PUT", "DELETE", "PATCH"],
             credentials: true
         }));
