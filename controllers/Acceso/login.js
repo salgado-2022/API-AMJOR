@@ -1,7 +1,6 @@
 const db = require("../../database/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-require('dotenv').config()
 
 const postUsuario = (req, res) => {
     const sql =
@@ -19,11 +18,7 @@ const postUsuario = (req, res) => {
 
                     if (data[0].ID_Rol == 1 && response) {
                         // Después de autenticar al usuario y generar el token
-                        const token = jwt.sign(
-                            { userId: data[0].idUsuario, Status: "Admin" },
-                            "jwt-secret-key",
-                            { expiresIn: "1d" }
-                        );
+                        const token = jwt.sign({ userId: data[0].idUsuario, Status: "Admin" },"Hola",{ expiresIn: "1d" });
 
                         // Configura la cookie
                         res.cookie("token", token, {
@@ -35,7 +30,7 @@ const postUsuario = (req, res) => {
 
                         res.status(200).json({
                             Status: "Success",
-                            redirectTo: `${process.env.DASHBOARD_REDIRECT_URL}`,
+                            redirectTo: `https://dashboard.amjor.shop`,
                         });
                     } else {
                         return res.json({ Error: "Password not matched" });
@@ -55,10 +50,13 @@ const searchUser = (req, res) => {
         return res.status(401).json({ error: "Token no proporcionado" });
     }
 
+    console.log(token)
+
     try {
         // Verificar y decodificar el token
-        const decodedToken = jwt.verify(token, "jwt-scret-key");
+        const decodedToken = jwt.verify(token, "Hola");
         const { userId } = decodedToken;
+        console.log(userId);
 
         const sql =
             "SELECT c.Nombre, c.Apellido, r.Nombre_Rol FROM cliente c INNER JOIN usuario u ON c.ID_Usuario = u.idUsuario INNER JOIN rol r on u.ID_Rol = r.ID_Rol WHERE u.idUsuario = ?";
