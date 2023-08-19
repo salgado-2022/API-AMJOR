@@ -17,7 +17,7 @@ const postUsuario = (req, res) => {
                 if (data[0].ID_Rol == 1 && response) {
                     const token = jwt.sign({ userId: data[0].idUsuario, Status: "Admin" }, "jwt-scret-key", { expiresIn: '1d' });
                     res.cookie('token', token);
-                    res.status(200).json({ Status: "Success", redirectTo: `/admindash/dashboard` })
+                    res.status(200).json({ Status: "Success", redirectTo: `${process.env.DASHBOARD_REDIRECT_URL}` })
                     // res.status(200).json({ Status: "Success", redirectTo: `${process.env.API_URL}/admindash/dashboard/app` })
 
                 } else {
