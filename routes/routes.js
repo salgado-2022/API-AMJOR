@@ -17,7 +17,8 @@ const { enviarPedido } = require('../controllers/Carrito/enviarPedido');
 // DASHBOARD
 const { buscarCantidadPedidos } = require('../controllers/Dashboard/searchPedidos');
 const { buscarCantidadUsuarios } = require('../controllers/Dashboard/searchUsuarios');
-
+const { buscarPedidosPendientes } = require('../controllers/Dashboard/searchPedidosPendientes');
+const { buscarTotalVentas } = require('../controllers/Dashboard/searchTotalVentas');
 
 
 //CONFIGURACION
@@ -75,6 +76,8 @@ router.get('/search/:token', searchUser);
 
 router.get('/admin/getinfo/totalpedidos', buscarCantidadPedidos)
 router.get('/admin/getinfo/totalusuarios', buscarCantidadUsuarios)
+router.get('/admin/getinfo/pedidospendientes', buscarPedidosPendientes)
+router.get('/admin/getinfo/totalventas', buscarTotalVentas)
 
 //POST
 router.post('/login', postUsuario)
