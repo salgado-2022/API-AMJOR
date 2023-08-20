@@ -52,9 +52,15 @@ const { eliminarAncheta } = require('../controllers/Anchetas/eliminarAncheta');
 
 const { validarCorreo, actualizarPassword } = require('../controllers/Acceso/reset');
 const { validarToken } = require('../controllers/Validations/TokenValidator');
-const { aceptar } = require('../controllers/Pedido/Aceptar')
-const { DetallePedido } = require('../controllers/Pedido/Detalle')
+
+//Pedidos
+const { aceptar } = require('../controllers/Pedido/Aceptar');
+const { rechazar} = require('../controllers/Pedido/Rechazar')
+const { DetallePedido } = require('../controllers/Pedido/Detalle');
 const { DetalleAncheta } = require('../controllers/Pedido/DetalleInsumo');
+
+
+
 
 //GET
 router.get('/prueba', authenticateToken, getInformacionDelCliente)
@@ -67,6 +73,7 @@ router.get('/admin/anchetas/insancheta/:id', verInsumos)
 router.get('/admin/anchetas/anchellamada/:id', listarEdAncheta)
 router.get('/admin/insumos/insullamada/:id', listarEdInsumo)
 router.get('/admin/pedidos/success/', aceptar)
+router.get('/admin/pedidos/refused/', rechazar)
 router.get('/admin/usuario', listarUsuario)
 router.get('/admin/usuario/usullamada/:id', listarEdUsuarios);
 router.get('/admin/configuracion', listarConfiguracion);

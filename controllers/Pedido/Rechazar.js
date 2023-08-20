@@ -2,10 +2,10 @@ const db = require("../../database/db");
 const nodemailer = require('nodemailer');
 
 
-const aceptar = (req, res) => {
+const rechazar = (req, res) => {
     const { pedido, cliente } = req.query;
 
-    const updateSql = "UPDATE pedido SET Estado = 4 WHERE ID_Pedido = ?";
+    const updateSql = "UPDATE pedido SET Estado = 5 WHERE ID_Pedido = ?";
 
     db.query(updateSql, [pedido], (updateError, updateResult) => {
         if (updateError) {
@@ -136,25 +136,25 @@ const aceptar = (req, res) => {
                             <!-- HIDDEN PREHEADER TEXT -->
                             <div
                                 style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: Open Sans, Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
-                                Tu pedido fue aceptado correctamente y será despachado en la fecha que nos asignaste.
+                                Tu pedido fue rechazado, si tienes alguna duda comunícate con nosotros.
                             </div>
                         
                             <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                 <tr>
                                     <td align="center" style="background-color: #eeeeee;" bgcolor="#eeeeee">
                                         <!--[if (gte mso 9)|(IE)]>
-                                                        <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
-                                                        <tr>
-                                                        <td align="center" valign="top" width="600">
-                                                        <![endif]-->
+                                                                                <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
+                                                                                <tr>
+                                                                                <td align="center" valign="top" width="600">
+                                                                                <![endif]-->
                                         <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
                                             <tr>
                                                 <td align="center" valign="top" style="font-size:0; padding: 35px;" bgcolor="#C464D3">
                                                     <!--[if (gte mso 9)|(IE)]>
-                                                                <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
-                                                                <tr>
-                                                                <td align="left" valign="top" width="300">
-                                                                <![endif]-->
+                                                                                        <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
+                                                                                        <tr>
+                                                                                        <td align="left" valign="top" width="300">
+                                                                                        <![endif]-->
                                                     <div
                                                         style="display:inline-block; max-width:50%; min-width:100px; vertical-align:top; width:100%;">
                                                         <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%"
@@ -170,9 +170,9 @@ const aceptar = (req, res) => {
                                                         </table>
                                                     </div>
                                                     <!--[if (gte mso 9)|(IE)]>
-                                                                </td>
-                                                                <td align="right" width="300">
-                                                                <![endif]-->
+                                                                                        </td>
+                                                                                        <td align="right" width="300">
+                                                                                        <![endif]-->
                                                     <div style="display:inline-block; max-width:50%; min-width:100px; vertical-align:top; width:100%;"
                                                         class="mobile-hide">
                                                         <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%"
@@ -205,31 +205,31 @@ const aceptar = (req, res) => {
                                                         </table>
                                                     </div>
                                                     <!--[if (gte mso 9)|(IE)]>
-                                                                </td>
-                                                                </tr>
-                                                                </table>
-                                                                <![endif]-->
+                                                                                        </td>
+                                                                                        </tr>
+                                                                                        </table>
+                                                                                        <![endif]-->
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td align="center" style="padding: 35px 35px 20px 35px; background-color: #ffffff;"
                                                     bgcolor="#ffffff">
                                                     <!--[if (gte mso 9)|(IE)]>
-                                                                <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
-                                                                <tr>
-                                                                <td align="center" valign="top" width="600">
-                                                                <![endif]-->
+                                                                                        <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
+                                                                                        <tr>
+                                                                                        <td align="center" valign="top" width="600">
+                                                                                        <![endif]-->
                                                     <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%"
                                                         style="max-width:600px;">
                                                         <tr>
                                                             <td align="center"
                                                                 style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding-top: 25px;">
-                                                                <img src="https://www.amjor.shop/static/media/logomoradoclaro.2eee5fa1d47c2715ea07.png"
+                                                                <img src="https://static.vecteezy.com/system/resources/previews/022/068/710/original/rejected-sign-and-symbol-clip-art-free-png.png"
                                                                     width="125" height="120"
                                                                     style="display: block; border: 0px; border-radius: 50%;" /><br>
                                                                 <h2
                                                                     style="font-size: 30px; font-weight: 800; line-height: 36px; color: #333333; margin: 0;">
-                                                                    ¡Gracias por tu compra!
+                                                                    Pedido rechazado
                                                                 </h2>
                                                             </td>
                                                         </tr>
@@ -238,8 +238,7 @@ const aceptar = (req, res) => {
                                                                 style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding-top: 10px;">
                                                                 <p
                                                                     style="font-size: 16px; font-weight: 400; line-height: 24px; color: #777777;">
-                                                                    Tu pedido fue aceptado correctamente y será despachado en la fecha que nos
-                                                                    asignaste.
+                                                                    Tu pedido fue rechazado, si tienes alguna duda comunícate con nosotros.
                                                                 </p>
                                                             </td>
                                                         </tr>
@@ -278,29 +277,29 @@ const aceptar = (req, res) => {
                                                         </tr>
                                                     </table>
                                                     <!--[if (gte mso 9)|(IE)]>
-                                                                </td>
-                                                                </tr>
-                                                                </table>
-                                                                <![endif]-->
+                                                                                        </td>
+                                                                                        </tr>
+                                                                                        </table>
+                                                                                        <![endif]-->
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td align="center" height="100%" valign="top" width="100%"
                                                     style="padding: 0 35px 35px 35px; background-color: #ffffff;" bgcolor="#ffffff">
                                                     <!--[if (gte mso 9)|(IE)]>
-                                                                <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
-                                                                <tr>
-                                                                <td align="center" valign="top" width="600">
-                                                                <![endif]-->
+                                                                                        <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
+                                                                                        <tr>
+                                                                                        <td align="center" valign="top" width="600">
+                                                                                        <![endif]-->
                                                     <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%"
                                                         style="max-width:660px;">
                                                         <tr>
                                                             <td align="center" valign="top" style="font-size:0;">
                                                                 <!--[if (gte mso 9)|(IE)]>
-                                                                            <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
-                                                                            <tr>
-                                                                            <td align="left" valign="top" width="300">
-                                                                            <![endif]-->
+                                                                                                    <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
+                                                                                                    <tr>
+                                                                                                    <td align="left" valign="top" width="300">
+                                                                                                    <![endif]-->
                                                                 <div
                                                                     style="display:inline-block; max-width:50%; min-width:240px; vertical-align:top; width:100%;">
                         
@@ -318,9 +317,9 @@ const aceptar = (req, res) => {
                                                                     </table>
                                                                 </div>
                                                                 <!--[if (gte mso 9)|(IE)]>
-                                                                            </td>
-                                                                            <td align="left" valign="top" width="300">
-                                                                            <![endif]-->
+                                                                                                    </td>
+                                                                                                    <td align="left" valign="top" width="300">
+                                                                                                    <![endif]-->
                                                                 <div
                                                                     style="display:inline-block; max-width:50%; min-width:240px; vertical-align:top; width:100%;">
                                                                     <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%"
@@ -335,27 +334,27 @@ const aceptar = (req, res) => {
                                                                     </table>
                                                                 </div>
                                                                 <!--[if (gte mso 9)|(IE)]>
-                                                                            </td>
-                                                                            </tr>
-                                                                            </table>
-                                                                            <![endif]-->
+                                                                                                    </td>
+                                                                                                    </tr>
+                                                                                                    </table>
+                                                                                                    <![endif]-->
                                                             </td>
                                                         </tr>
                                                     </table>
                                                     <!--[if (gte mso 9)|(IE)]>
-                                                                </td>
-                                                                </tr>
-                                                                </table>
-                                                                <![endif]-->
+                                                                                        </td>
+                                                                                        </tr>
+                                                                                        </table>
+                                                                                        <![endif]-->
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td align="center" style="padding: 35px; background-color: #ffffff;" bgcolor="#ffffff">
                                                     <!--[if (gte mso 9)|(IE)]>
-                                                                <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
-                                                                <tr>
-                                                                <td align="center" valign="top" width="600">
-                                                                <![endif]-->
+                                                                                        <table align="center" border="0" cellspacing="0" cellpadding="0" width="600">
+                                                                                        <tr>
+                                                                                        <td align="center" valign="top" width="600">
+                                                                                        <![endif]-->
                                                     <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%"
                                                         style="max-width:600px;">
                                                         <tr>
@@ -387,18 +386,18 @@ const aceptar = (req, res) => {
                                                         </tr>
                                                     </table>
                                                     <!--[if (gte mso 9)|(IE)]>
-                                                                </td>
-                                                                </tr>
-                                                                </table>
-                                                                <![endif]-->
+                                                                                        </td>
+                                                                                        </tr>
+                                                                                        </table>
+                                                                                        <![endif]-->
                                                 </td>
                                             </tr>
                                         </table>
                                         <!--[if (gte mso 9)|(IE)]>
-                                                        </td>
-                                                        </tr>
-                                                        </table>
-                                                        <![endif]-->
+                                                                                </td>
+                                                                                </tr>
+                                                                                </table>
+                                                                                <![endif]-->
                                     </td>
                                 </tr>
                             </table>
@@ -416,4 +415,4 @@ const aceptar = (req, res) => {
     });
 };
 
-module.exports = { aceptar };
+module.exports = { rechazar };
