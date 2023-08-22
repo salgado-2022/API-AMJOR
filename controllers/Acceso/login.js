@@ -20,10 +20,10 @@ const postUsuario = (req, res) => {
 
                         // Configura la cookie
                         res.cookie("token", token, {
-                            domain: ".amjor.shop", // Permite compartir cookies entre subdominios
-                            secure: true, // Solo envía la cookie a través de HTTPS
-                            httpOnly: false, // Previene acceso desde JavaScript
-                            sameSite: "none", // Permite compartir cookies en solicitudes entre sitios
+                            // domain: ".amjor.shop", // Permite compartir cookies entre subdominios
+                            // secure: true, // Solo envía la cookie a través de HTTPS
+                            // httpOnly: false, // Previene acceso desde JavaScript
+                            // sameSite: "none", // Permite compartir cookies en solicitudes entre sitios
                         });
 
                         res.status(200).json({
@@ -48,13 +48,11 @@ const searchUser = (req, res) => {
         return res.status(401).json({ error: "Token no proporcionado" });
     }
 
-    console.log(token)
 
     try {
         // Verificar y decodificar el token
         const decodedToken = jwt.verify(token, "Hola");
         const { userId } = decodedToken;
-        console.log(userId);
 
         const sql =
             "SELECT c.Nombre, c.Apellido, r.Nombre_Rol FROM cliente c INNER JOIN usuario u ON c.ID_Usuario = u.idUsuario INNER JOIN rol r on u.ID_Rol = r.ID_Rol WHERE u.idUsuario = ?";
