@@ -20,10 +20,10 @@ const postUsuario = (req, res) => {
 
                         // Configura la cookie
                         res.cookie("token", token, {
-                            domain: ".amjor.shop", // Permite compartir cookies entre subdominios
-                            secure: true, // Solo envía la cookie a través de HTTPS
-                            httpOnly: false, // Previene acceso desde JavaScript
-                            sameSite: "none", // Permite compartir cookies en solicitudes entre sitios
+                            // domain: ".amjor.shop", // Permite compartir cookies entre subdominios
+                            // secure: true, // Solo envía la cookie a través de HTTPS
+                            // httpOnly: false, // Previene acceso desde JavaScript
+                            // sameSite: "none", // Permite compartir cookies en solicitudes entre sitios
                         });
 
                         res.status(200).json({

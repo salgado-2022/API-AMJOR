@@ -59,6 +59,11 @@ const { rechazar} = require('../controllers/Pedido/Rechazar')
 const { DetallePedido } = require('../controllers/Pedido/Detalle');
 const { DetalleAncheta } = require('../controllers/Pedido/DetalleInsumo');
 
+//Validaciones
+const {validarDocumento} = require('../controllers/Acceso/validarRegistros')
+const {validarEmail} = require('../controllers/Acceso/validarRegistros')
+
+
 
 
 
@@ -97,6 +102,12 @@ router.post('/crearUsuario', postCrearUsuario)
 router.post('/crearRol', postCrearRol)
 
 router.post('/enviarPedido', enviarPedido)
+
+//POST VALIDACIONES
+router.post('/validate/documento', validarDocumento)
+router.post('/validate/email', validarEmail)
+
+
 
 
 //PATCH
