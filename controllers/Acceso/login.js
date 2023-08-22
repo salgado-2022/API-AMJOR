@@ -30,7 +30,7 @@ const postUsuario = (req, res) => {
 
                         res.status(200).json({
                             Status: "Success",
-                            redirectTo: `https://dashboard.amjor.shop`,
+                            redirectTo: `${process.env.DASHBOARD_REDIRECT_URL}`,
                         });
                     } else {
                         return res.json({ Error: "Password not matched" });

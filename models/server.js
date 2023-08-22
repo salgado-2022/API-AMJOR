@@ -56,7 +56,7 @@ class Server {
 
     listen() {
         this.server.listen(this.port, () => {
-            console.log(`Escuchando desde http://localhost:${this.port}`);
+            console.log(`Escuchando desde http://${process.env.API_URL}:${this.port}`);
         });
     }
 
