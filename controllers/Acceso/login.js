@@ -4,14 +4,15 @@ const jwt = require("jsonwebtoken")
 
 
 const postUsuario = (req, res) => {
+
     const sql = "SELECT idUsuario , correo, contrasena, rol.ID_Rol from usuario INNER JOIN rol ON usuario.ID_Rol = rol.ID_Rol WHERE Correo = ? AND usuario.ID_Rol = 1;";
 
-    db.query(sql, [req.body.email], (err, data) => {
+    db.query(sql, [req.body.Correo], (err, data) => {
 
         if (err) return res.status(500).json("Login Error in Server");
 
         if (data.length > 0) {
-            bcrypt.compare(req.body.password.toString(), data[0].contrasena, (err, response) => {
+            bcrypt.compare(req.body.Password.toString(), data[0].contrasena, (err, response) => {
                 if (err) return res.json({ Error: "Password compare error" })
 
                 if (data[0].ID_Rol == 1 && response) {
@@ -53,10 +54,10 @@ const searchUser = (req, res) => {
             if (result.length === 0) {
                 return res.status(404).json({ error: "El usuario no existe" });
             }
-            
+
             return res.status(200).json(result);
 
-            
+
 
         })
     } catch (error) {
