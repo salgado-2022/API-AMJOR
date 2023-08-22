@@ -3,18 +3,16 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const postUsuario = (req, res) => {
-    const sql =
-        "SELECT idUsuario , correo, contrasena, rol.ID_Rol from usuario INNER JOIN rol ON usuario.ID_Rol = rol.ID_Rol WHERE Correo = ? AND usuario.ID_Rol = 1;";
 
-    db.query(sql, [req.body.email], (err, data) => {
+    const sql = "SELECT idUsuario , correo, contrasena, rol.ID_Rol from usuario INNER JOIN rol ON usuario.ID_Rol = rol.ID_Rol WHERE Correo = ? AND usuario.ID_Rol = 1;";
+
+    db.query(sql, [req.body.Correo], (err, data) => {
+
         if (err) return res.status(500).json("Login Error in Server");
 
         if (data.length > 0) {
-            bcrypt.compare(
-                req.body.password.toString(),
-                data[0].contrasena,
-                (err, response) => {
-                    if (err) return res.json({ Error: "Password compare error" });
+            bcrypt.compare(req.body.Password.toString(), data[0].contrasena, (err, response) => {
+                if (err) return res.json({ Error: "Password compare error" })
 
                     if (data[0].ID_Rol == 1 && response) {
                         // Después de autenticar al usuario y generar el token
@@ -69,7 +67,10 @@ const searchUser = (req, res) => {
             }
 
             return res.status(200).json(result);
-        });
+
+            
+
+        })
     } catch (error) {
         return res.status(401).json({ error: "hola error nea" });
     }
