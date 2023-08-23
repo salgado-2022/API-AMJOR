@@ -3,10 +3,13 @@ const db = require("../../database/db");
 const listarUsuario = (req, res) => {
   // Consulta SQL para obtener todos los usuarios con su rol, incluyendo activos e inactivos
   const sql = `
-    SELECT U.idUsuario, U.correo, U.Estado, R.Nombre_Rol
-    FROM usuario U
-    LEFT JOIN rol R ON U.ID_Rol = R.ID_Rol
-    ORDER BY U.idUsuario ASC
+  SELECT U.idUsuario, U.correo, U.Estado, R.Nombre_Rol, C.ID_Cliente, C.Documento, C.Nombre
+  FROM usuario U
+  LEFT JOIN rol R ON U.ID_Rol = R.ID_Rol
+  LEFT JOIN cliente C ON U.idUsuario = C.ID_Cliente
+  ORDER BY U.idUsuario ASC;
+  
+  
   `;
 
   // Ejecuta la consulta en la base de datos
