@@ -35,7 +35,6 @@ const { postCrearUsuario } = require('../controllers/Usuarios/crearUsuario');
 const { listarUsuario } = require('../controllers/Usuarios/listarUsuario');
 const { listarEdUsuarios, editarUsuario } = require('../controllers/Usuarios/editarUsuario');
 const { eliminarUsuario } = require('../controllers/Usuarios/eliminarUsuario');
-const { listarCliente } = require('../controllers/Usuarios/listarClientes')
 
 
 //INSUMOS
