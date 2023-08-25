@@ -7,16 +7,12 @@ const postRegistro = (req, res) => {
 
     const { Documento, Nombre, Apellidos, Telefono, Email, Password } = req.body
 
-    console.log(Password)
-    console.log(Email)
-
 
     bcrypt.hash(Password.toString(), salt, (err, hash) => {
 
         if (err) return res.json({ Error: "Error en la contraseña" });
 
         const userValues = [Email, hash];
-        console.log(hash)
 
         const sql = "INSERT INTO usuario  (`correo`, `contrasena`) VALUES (?)"
 
