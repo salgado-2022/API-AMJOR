@@ -1,11 +1,21 @@
 const db = require("../../database/db");
 
 const enviarPedido = (req, res) => {
-    const { ID_Cliente, Direccion_Entrega, Fecha_Entrega, Precio_Total, Anchetas } = req.body;
+    const { 
+        ID_Cliente,
+        Pais, 
+        Municipio,
+        Barrio,
+        Direccion_Entrega, 
+        Fecha_Entrega, 
+        Notas_Adicionales,
+        Precio_Total, 
+        Anchetas } = req.body;
 
     // Insertar el pedido en la tabla `pedido`
-    const insertPedidoQuery = "INSERT INTO pedido (ID_Cliente, Direccion_Entrega, Fecha_Entrega, Precio_Total) VALUES (?, ?, ?, ?)";
-    const pedidoValues = [ID_Cliente, Direccion_Entrega, Fecha_Entrega, Precio_Total];
+    
+    const insertPedidoQuery = "INSERT INTO `pedido` (`ID_Cliente`, `Pais`, `Municipio`, `Barrio`, `Direccion_Entrega`, `Fecha_Entrega`, `Notas_Adicionales`, `Precio_Total`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    const pedidoValues = [ID_Cliente, Pais, Municipio, Barrio, Direccion_Entrega, Fecha_Entrega, Notas_Adicionales, Precio_Total];
 
     db.query(insertPedidoQuery, pedidoValues, (err, result) => {
         if (err) return res.json({ Error: "Error al crear el pedido en el servidor: " + err });

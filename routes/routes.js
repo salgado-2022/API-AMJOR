@@ -1,7 +1,6 @@
 const { Router } = require('express');
 const router = Router();
 
-
 const { postUsuario } = require('../controllers/Acceso/login');
 const { postRegistro } = require('../controllers/Acceso/register');
 const { getInformacionDelCliente } = require('../controllers/prueba');
@@ -12,6 +11,7 @@ const { searchUser} = require("../controllers/Acceso/login")
 // CARRITO
 const { enviarPedido } = require('../controllers/Carrito/enviarPedido');
 
+const { searchUserInfoCheckout } = require('../controllers/Carrito/userInfoCheckout');
 
 
 // DASHBOARD
@@ -61,7 +61,7 @@ const { DetalleAncheta } = require('../controllers/Pedido/DetalleInsumo');
 
 //Validaciones
 const {validarDocumento} = require('../controllers/Acceso/validarRegistros')
-const {validarEmail} = require('../controllers/Acceso/validarRegistros')
+const {validarEmail} = require('../controllers/Acceso/validarRegistros');
 
 
 
@@ -86,11 +86,13 @@ router.get('/admin/listpermisos', listarPermisos);
 router.get('/admin/configuracion/confillamada/:id', listarEdRol)
 router.get('/search/:token', searchUser);
 
+
 router.get('/admin/getinfo/totalpedidos', buscarCantidadPedidos)
 router.get('/admin/getinfo/totalusuarios', buscarCantidadUsuarios)
 router.get('/admin/getinfo/pedidospendientes', buscarPedidosPendientes)
 router.get('/admin/getinfo/totalventas', buscarTotalVentas)
 
+router.get('/checkout/searchuserinfo/:userId', searchUserInfoCheckout)
 //POST
 router.post('/login', postUsuario)
 router.post('/register', postRegistro)
