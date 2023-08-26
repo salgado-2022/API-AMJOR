@@ -26,7 +26,9 @@ db.getConnection((err, connection) => {
     
     console.log('Conexión obtenida del pool:', connection.threadId);
     
-    // Libera la conexión después de su uso
+    // Aquí se pueden realizar otras operaciones en la base de datos.
+
+    // Libera la conexión después de su uso.
     connection.release();
     console.log('Conexión liberada:', connection.threadId);
 });
