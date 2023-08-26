@@ -1,5 +1,6 @@
 process.on('uncaughtException', (err) => {
     console.error('Error no manejado:', err);
+    // Manejar las excepciones y errores evitando que se cierre el servidor NodeJS.
     // Puedes realizar acciones adicionales aquí, como enviar notificaciones o limpiar recursos.
 });
 
