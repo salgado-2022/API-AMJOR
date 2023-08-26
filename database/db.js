@@ -8,14 +8,12 @@ const db = mysql.createPool({
     password: process.env.PASSWORD,
     port: 3306,
     connectionLimit: 10, // Establecer el número máximo de conexiones en el pool
-    // ... otras opciones de configuración
 
-    // Agregar las siguientes opciones para la reconexión automática
+    // Opciones de configuración para la reconexión automática
     acquireTimeout: 10000, // Tiempo de espera para adquirir la conexión en milisegundos
     connectionLimit: 10,   // Número máximo de conexiones en el pool
     waitForConnections: true, // Esperar si no hay conexiones disponibles en el pool
     queueLimit: 0, // Sin límite en la cola de conexiones pendientes
-    
 });
 
 module.exports = db;
@@ -27,8 +25,6 @@ db.getConnection((err, connection) => {
     }
     
     console.log('Conexión obtenida del pool:', connection.threadId);
-
-    // Realiza tus operaciones en la base de datos aquí
     
     // Libera la conexión después de su uso
     connection.release();
