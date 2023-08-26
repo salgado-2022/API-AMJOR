@@ -1,3 +1,8 @@
+process.on('uncaughtException', (err) => {
+    console.error('Error no manejado:', err);
+    // Puedes realizar acciones adicionales aquí, como enviar notificaciones o limpiar recursos.
+});
+
 const express = require("express")
 const cors = require('cors')
 const cookieParser = require("cookie-parser")
@@ -13,7 +18,7 @@ class Server {
         this.port = process.env.PORT;
         this.usuarioPath = '/api/';
         this.middlewares();
-        this.dbConectar();
+
         this.routes(); // Disparar el método routes
         this.server = http.createServer(this.app);
         this.io = socketio(this.server, {

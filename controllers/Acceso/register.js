@@ -18,7 +18,7 @@ const postRegistro = (req, res) => {
 
         db.query(sql, [userValues], (err, result) => {
 
-            if (err) return res.json({ Error: "Error insertando datos en el servidor" });
+            if (err) return res.json({ Error: "Error insertando datos en el servidor", err});
 
             const ID_Usuario = result.insertId
             const clientValues = [ID_Usuario, Documento, Nombre, Apellidos, Telefono];
