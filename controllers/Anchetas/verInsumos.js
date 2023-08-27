@@ -3,7 +3,7 @@ const db = require("../../database/db");
 
 const verInsumos = (req, res) => {
 
-    const sql = "SELECT p.ID_Insumos_Ancheta, a.NombreInsumo, p.Cantidad, p.Precio AS Total FROM insumos_ancheta p INNER JOIN insumo a ON p.ID_Insumo = a.ID_Insumo WHERE p.ID_Ancheta = ?;"
+    const sql = "SELECT p.ID_Insumos_Ancheta, p.ID_Insumo, a.NombreInsumo, p.Cantidad, p.Precio AS Total FROM insumos_ancheta p INNER JOIN insumo a ON p.ID_Insumo = a.ID_Insumo WHERE p.ID_Ancheta = ?;"
     const id = req.params.id;
 
     db.query(sql,[id], (err, result)=>{
