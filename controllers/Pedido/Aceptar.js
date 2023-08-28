@@ -12,7 +12,7 @@ const aceptar = (req, res) => {
             return res.status(500).json({ Error: "Error updating order status" });
         }
 
-        const selectSql = "SELECT c.Nombre, u.correo FROM pedido p INNER JOIN cliente c ON p.ID_Cliente = c.ID_Cliente INNER JOIN usuario u ON c.ID_Usuario = u.idUsuario WHERE p.ID_Cliente = ? AND p.ID_Pedido=?;";
+        const selectSql = "SELECT c.Nombre, u.correo,p.Fecha_Entrega, p.Direccion_Entrega, p.Municipio, p.Barrio FROM pedido p INNER JOIN cliente c ON p.ID_Cliente = c.ID_Cliente INNER JOIN usuario u ON c.ID_Usuario = u.idUsuario WHERE p.ID_Cliente = ? AND p.ID_Pedido=?;";
 
         db.query(selectSql, [cliente, pedido], async (selectError, result) => {
             if (selectError) {
@@ -21,13 +21,23 @@ const aceptar = (req, res) => {
 
             if (result.length > 0) {
                 const correo = result[0].correo;
+                const fecha = result[0].Fecha_Entrega
+                const direccion= result[0].Direccion_Entrega
+                const municipio = result[0].Municipio
+                const barrio = result[0].Barrio
 
-                const sql3 = "SELECT p.ID_PedidoAnch, a.NombreAncheta, p.Cantidad, p.Precio * p.Cantidad AS Total FROM pedido_ancheta p INNER JOIN ancheta a ON p.ID_Ancheta = a.ID_Ancheta WHERE p.ID_Pedido = ?"
+                const sql3 = "SELECT p.ID_PedidoAnch, a.NombreAncheta, p.Cantidad, p.Precio * p.Cantidad AS Total FROM pedido_ancheta p INNER JOIN ancheta a ON p.ID_Ancheta = a.ID_Ancheta INNER JOIN pedido Pe ON p.ID_Pedido = Pe.ID_Pedido WHERE p.ID_Pedido = ?"
                 db.query(sql3, [pedido], async (error, resultado) => {
                     if (error) {
 
                         res.status(500).json({ Error: "server query error" })
                     }
+                    
+                    const formatDate = (dateString) => {
+                        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                        const date = new Date(dateString);
+                        return date.toLocaleDateString(undefined, options);
+                    };
                     const productos = resultado.map((producto) => {
                         return `
                         <tr>
@@ -253,7 +263,7 @@ const aceptar = (req, res) => {
                                                                         </td>
                                                                         <td width="25%" align="left" bgcolor="#eeeeee"
                                                                             style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px;">
-                                                                            2345678
+                                                                            ${pedido}
                                                                         </td>
                                                                     </tr>
                                                                     ${productos.join("")}
@@ -310,7 +320,10 @@ const aceptar = (req, res) => {
                                                                             <td align="left" valign="top"
                                                                                 style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px;">
                                                                                 <p style="font-weight: 800;">Dirección de destino</p>
-                                                                                <p>675 Massachusetts Avenue<br>11th Floor<br>Cambridge, MA 02139
+                                                                                <p>
+                                                                                ${direccion} 
+                                                                                <br/>
+                                                                                ${barrio} - ${municipio}
                                                                                 </p>
                         
                                                                             </td>
@@ -329,7 +342,7 @@ const aceptar = (req, res) => {
                                                                             <td align="left" valign="top"
                                                                                 style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px;">
                                                                                 <p style="font-weight: 800;">Fecha de entrega</p>
-                                                                                <p>January 1st, 2016</p>
+                                                                                <p>${formatDate(fecha)}</p>
                                                                             </td>
                                                                         </tr>
                                                                     </table>
