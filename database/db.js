@@ -1,34 +1,46 @@
 const mysql = require('mysql');
 require('dotenv').config();
 
-const db = mysql.createPool({
+const dbConfig = {
     host: process.env.HOST,
     database: process.env.DATABASE,
     user: process.env.USER,
     password: process.env.PASSWORD,
     port: 3306,
-    connectionLimit: 10, // Establecer el número máximo de conexiones en el pool
+    connectionLimit: 10,
+    acquireTimeout: 10000,
+    waitForConnections: true,
+    queueLimit: 0,
+};
 
-    // Opciones de configuración para la reconexión automática
-    acquireTimeout: 10000, // Tiempo de espera para adquirir la conexión en milisegundos
-    connectionLimit: 10,   // Número máximo de conexiones en el pool
-    waitForConnections: true, // Esperar si no hay conexiones disponibles en el pool
-    queueLimit: 0, // Sin límite en la cola de conexiones pendientes
-});
+let db;
+
+function createConnectionPool() {
+    db = mysql.createPool(dbConfig);
+
+    db.on('connection', (connection) => {
+        console.log('Nueva conexión establecida:', connection.threadId);
+
+        connection.on('error', (err) => {
+            if (
+                err.code === 'PROTOCOL_CONNECTION_LOST' ||
+                err.code === 'PROTOCOL_SEQUENCE_TIMEOUT'
+            ) {
+                console.log('Error de conexión. Intentando reconectar...');
+                createConnectionPool();
+            }
+        });
+    });
+
+    db.on('acquire', (connection) => {
+        console.log('Conexión obtenida del pool:', connection.threadId);
+    });
+
+    db.on('release', (connection) => {
+        console.log('Conexión liberada:', connection.threadId);
+    });
+}
+
+createConnectionPool();
 
 module.exports = db;
-
-db.getConnection((err, connection) => {
-    if (err) {
-        console.error('Error al obtener la conexión del pool:', err);
-        return;
-    }
-    
-    console.log('Conexión obtenida del pool:', connection.threadId);
-    
-    // Aquí se pueden realizar otras operaciones en la base de datos.
-
-    // Libera la conexión después de su uso.
-    connection.release();
-    console.log('Conexión liberada:', connection.threadId);
-});
