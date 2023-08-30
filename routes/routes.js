@@ -1,12 +1,15 @@
 const { Router } = require('express');
 const router = Router();
 
+
+// ACCESO
 const { postUsuario } = require('../controllers/Acceso/login');
 const { postRegistro } = require('../controllers/Acceso/register');
 const { getInformacionDelCliente } = require('../controllers/prueba');
 const { authenticateToken } = require('../controllers/Acceso/authenticateToken');
 const { logout } = require('../controllers/Acceso/logout');
-const { searchUser} = require("../controllers/Acceso/login")
+const { searchUser} = require("../controllers/Acceso/login");
+const {searchPermissions} = require('../controllers/Acceso/permisos')
 
 // CARRITO
 const { enviarPedido } = require('../controllers/Carrito/enviarPedido');
@@ -58,6 +61,7 @@ const { aceptar } = require('../controllers/Pedido/Aceptar');
 const { rechazar} = require('../controllers/Pedido/Rechazar')
 const { DetallePedido } = require('../controllers/Pedido/Detalle');
 const { DetalleAncheta } = require('../controllers/Pedido/DetalleInsumo');
+const {Preparacion, Preparado, Despachado} = require('../controllers/Pedido/ActualizarStatus');
 
 //Validaciones
 const {validarDocumento} = require('../controllers/Acceso/validarRegistros')
@@ -85,6 +89,7 @@ router.get('/admin/configuracion', listarConfiguracion);
 router.get('/admin/listpermisos', listarPermisos);
 router.get('/admin/configuracion/confillamada/:id', listarEdRol)
 router.get('/search/:token', searchUser);
+router.get('/admin/search/permisos/:idUser',searchPermissions)
 
 
 router.get('/admin/getinfo/totalpedidos', buscarCantidadPedidos)
@@ -120,6 +125,9 @@ router.put('/admin/anchetas/anchetaedit/:id', editarAncheta)
 router.put('/admin/insumos/insumoedit/:id', editarInsumo)
 router.put('/admin/usuario/usuariarioedit/:id', editarUsuario);
 router.put('/admin/configuracion/confiedit/:id', editarRol);
+router.put('/admin/pedido/status/preparacion/:idPedido', Preparacion)
+router.put('/admin/pedido/status/preparado/:idPedido',Preparado)
+router.put('/admin/pedido/status/despachado/:idPedido',Despachado)
 
 //DELETE
 router.delete('/admin/insumos/insumodel/:id', eliminarInsumo)
