@@ -63,6 +63,9 @@ const { DetallePedido } = require('../controllers/Pedido/Detalle');
 const { DetalleAncheta } = require('../controllers/Pedido/DetalleInsumo');
 const {Preparacion, Preparado, Despachado} = require('../controllers/Pedido/ActualizarStatus');
 
+//Ventas
+const {listarVentas} = require('../controllers/Ventas/listarVentas')
+
 //Validaciones
 const {validarDocumento} = require('../controllers/Acceso/validarRegistros')
 const {validarEmail} = require('../controllers/Acceso/validarRegistros');
@@ -96,8 +99,11 @@ router.get('/admin/getinfo/totalpedidos', buscarCantidadPedidos)
 router.get('/admin/getinfo/totalusuarios', buscarCantidadUsuarios)
 router.get('/admin/getinfo/pedidospendientes', buscarPedidosPendientes)
 router.get('/admin/getinfo/totalventas', buscarTotalVentas)
-
 router.get('/checkout/searchuserinfo/:userId', searchUserInfoCheckout)
+
+router.get('/admin/listar/ventas',listarVentas)
+
+
 //POST
 router.post('/login', postUsuario)
 router.post('/register', postRegistro)
