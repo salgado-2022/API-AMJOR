@@ -4,9 +4,10 @@ const listarEdRol = (req, res) => {
   const idRol = req.params.id;
 
   const sql = `
-    SELECT r.*, pxr.ID_Rol_Permiso, pxr.ID_Permiso
+    SELECT r.*, p.ID_Permiso, p.NombrePermiso /* Otros campos del permiso... */
     FROM rol r
     LEFT JOIN permiso_x_rol pxr ON r.ID_Rol = pxr.ID_Rol
+    LEFT JOIN permiso p ON pxr.ID_Permiso = p.ID_Permiso
     WHERE r.ID_Rol = ?;
   `;
 
@@ -16,38 +17,61 @@ const listarEdRol = (req, res) => {
       return res.status(500).json({ Message: "Error en el servidor" });
     }
 
-    // Organizar los datos para enviarlos en la respuesta
+    if (result.length === 0) {
+      return res.status(404).json({ Message: "Rol no encontrado" });
+    }
+
     const rolData = {
       ID_Rol: result[0].ID_Rol,
       Nombre_Rol: result[0].Nombre_Rol,
+      estado: result[0].estado,
+      permisos: result
+        .filter(row => row.ID_Permiso !== null)
+        .map(row => ({
+          ID_Permiso: row.ID_Permiso,
+          NombrePermiso: row.NombrePermiso, /* Otros campos del permiso... */
+        })),
       // Otros campos del rol...
     };
-
-    const permisos = result
-      .filter(row => row.ID_Rol_Permiso !== null) // Filtrar solo los permisos asociados
-      .map(row => ({
-        ID_Permiso: row.ID_Permiso,
-        // Otros campos del permiso...
-      }));
-
-    rolData.permisos = permisos;
 
     return res.json(rolData);
   });
 };
 
 const editarRol = (req, res) => {
-  const sql = "UPDATE rol SET Nombre_Rol = ? WHERE ID_Rol = ?";
-  const id = req.params.id;
-  const { Nombre_Rol } = req.body;
+  const idRol = req.params.id;
+  const { Nombre_Rol, estado, Permisos } = req.body;
 
-  db.query(sql, [Nombre_Rol, id], (err, result) => {
+  const sqlUpdateRol = "UPDATE rol SET Nombre_Rol = ?, estado = ? WHERE ID_Rol = ?";
+  const sqlDeletePermisos = "DELETE FROM permiso_x_rol WHERE ID_Rol = ?";
+  const sqlInsertPermisos = "INSERT INTO permiso_x_rol (ID_Rol, ID_Permiso) VALUES ?";
+
+  db.query(sqlUpdateRol, [Nombre_Rol, estado, idRol], (err, result) => {
     if (err) {
       console.error(err);
       return res.status(500).json({ Message: "Error en el servidor" });
     }
 
-    return res.json({ Message: "Rol actualizado correctamente" });
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ Message: "Rol no encontrado" });
+    }
+
+    db.query(sqlDeletePermisos, [idRol], (err, deleteResult) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ Message: "Error en el servidor" });
+      }
+
+      const valuesToInsert = Permisos.map(ID_Permiso => [idRol, ID_Permiso]);
+      db.query(sqlInsertPermisos, [valuesToInsert], (err, insertResult) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ Message: "Error en el servidor" });
+        }
+
+        return res.json({ Message: "Rol actualizado correctamente" });
+      });
+    });
   });
 };
 
