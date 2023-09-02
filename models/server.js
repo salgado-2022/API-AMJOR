@@ -9,8 +9,6 @@ const cors = require('cors')
 const cookieParser = require("cookie-parser")
 const upload = require('./multerConfig');
 const http = require('http');
-const socketio = require('socket.io');
-const {listarPedidos} = require('../controllers/Pedido/listar')
 const db = require('../database/db') // Incluir db connection
 
 class Server {
@@ -22,12 +20,6 @@ class Server {
 
         this.routes(); // Disparar el método routes
         this.server = http.createServer(this.app);
-        this.io = socketio(this.server, {
-            cors: {
-                origin: "*"
-            },
-        });
-        this.setupSocket();
     }
     async dbConectar() {
         await db.connect(function (err) {
@@ -56,9 +48,6 @@ class Server {
         this.app.use(this.usuarioPath, require('../routes/routes'))
     }
 
-    setupSocket() {
-        listarPedidos(this.io);
-    }
 
     listen() {
         this.server.listen(this.port, () => {
