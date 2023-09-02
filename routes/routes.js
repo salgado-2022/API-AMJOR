@@ -62,6 +62,7 @@ const { rechazar} = require('../controllers/Pedido/Rechazar')
 const { DetallePedido } = require('../controllers/Pedido/Detalle');
 const { DetalleAncheta } = require('../controllers/Pedido/DetalleInsumo');
 const {Preparacion, Preparado, Despachado} = require('../controllers/Pedido/ActualizarStatus');
+const {listarPedidos} = require('../controllers/Pedido/listar')
 
 //Ventas
 const {listarVentas} = require('../controllers/Ventas/listarVentas')
@@ -77,6 +78,7 @@ const {validarEmail} = require('../controllers/Acceso/validarRegistros');
 //GET
 router.get('/prueba', authenticateToken, getInformacionDelCliente)
 router.get('/logout', logout)
+router.get('/admin/listar/pedido',listarPedidos);
 router.get('/admin/pedidos/detalle/:id', DetallePedido)
 router.get('/admin/pedidos/detalle/ancheta/:id', DetalleAncheta)
 router.get('/admin/anchetas', listarAncheta)
