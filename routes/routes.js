@@ -8,8 +8,8 @@ const { postRegistro } = require('../controllers/Acceso/register');
 const { getInformacionDelCliente } = require('../controllers/prueba');
 const { authenticateToken } = require('../controllers/Acceso/authenticateToken');
 const { logout } = require('../controllers/Acceso/logout');
-const { searchUser} = require("../controllers/Acceso/login");
-const {searchPermissions} = require('../controllers/Acceso/permisos')
+const { searchUser } = require("../controllers/Acceso/login");
+const { searchPermissions } = require('../controllers/Acceso/permisos')
 
 // CARRITO
 const { enviarPedido } = require('../controllers/Carrito/enviarPedido');
@@ -58,18 +58,20 @@ const { validarToken } = require('../controllers/Validations/TokenValidator');
 
 //Pedidos
 const { aceptar } = require('../controllers/Pedido/Aceptar');
-const { rechazar} = require('../controllers/Pedido/Rechazar')
+const { rechazar } = require('../controllers/Pedido/Rechazar')
 const { DetallePedido } = require('../controllers/Pedido/Detalle');
 const { DetalleAncheta } = require('../controllers/Pedido/DetalleInsumo');
-const {Preparacion, Preparado, Despachado} = require('../controllers/Pedido/ActualizarStatus');
-const {listarPedidos} = require('../controllers/Pedido/listar')
+const { Preparacion, Preparado, Despachado } = require('../controllers/Pedido/ActualizarStatus');
+const { listarPedidos } = require('../controllers/Pedido/listar')
 
 //Ventas
-const {listarVentas} = require('../controllers/Ventas/listarVentas')
+const { listarVentas } = require('../controllers/Ventas/listarVentas')
+const { listarVentasCliente } = require('../controllers/Ventas/listarVentasCliente')
 
 //Validaciones
-const {validarDocumento} = require('../controllers/Acceso/validarRegistros')
-const {validarEmail} = require('../controllers/Acceso/validarRegistros');
+const { validarDocumento } = require('../controllers/Acceso/validarRegistros');
+const { validarEmail } = require('../controllers/Acceso/validarRegistros');
+const { RutaSegura } = require('../controllers/Validations/ValidarCliente')
 
 
 
@@ -78,7 +80,7 @@ const {validarEmail} = require('../controllers/Acceso/validarRegistros');
 //GET
 router.get('/prueba', authenticateToken, getInformacionDelCliente)
 router.get('/logout', logout)
-router.get('/admin/listar/pedido',listarPedidos);
+router.get('/admin/listar/pedido', listarPedidos);
 router.get('/admin/pedidos/detalle/:id', DetallePedido)
 router.get('/admin/pedidos/detalle/ancheta/:id', DetalleAncheta)
 router.get('/admin/anchetas', listarAncheta)
@@ -94,7 +96,9 @@ router.get('/admin/configuracion', listarConfiguracion);
 router.get('/admin/listpermisos', listarPermisos);
 router.get('/admin/configuracion/confillamada/:id', listarEdRol)
 router.get('/search/:token', searchUser);
-router.get('/admin/search/permisos/:idUser',searchPermissions)
+router.get('/admin/search/permisos/:idUser', searchPermissions)
+router.get('/ventas/cliente/:token', listarVentasCliente)
+router.get('/validar/cliente/:token', RutaSegura)
 
 
 router.get('/admin/getinfo/totalpedidos', buscarCantidadPedidos)
@@ -103,7 +107,7 @@ router.get('/admin/getinfo/pedidospendientes', buscarPedidosPendientes)
 router.get('/admin/getinfo/totalventas', buscarTotalVentas)
 router.get('/checkout/searchuserinfo/:userId', searchUserInfoCheckout)
 
-router.get('/admin/listar/ventas',listarVentas)
+router.get('/admin/listar/ventas', listarVentas)
 
 
 //POST
@@ -134,8 +138,8 @@ router.put('/admin/insumos/insumoedit/:id', editarInsumo)
 router.put('/admin/usuario/usuariarioedit/:id', editarUsuario);
 router.put('/admin/configuracion/confiedit/:id', editarRol);
 router.put('/admin/pedido/status/preparacion/:idPedido', Preparacion)
-router.put('/admin/pedido/status/preparado/:idPedido',Preparado)
-router.put('/admin/pedido/status/despachado/:idPedido',Despachado)
+router.put('/admin/pedido/status/preparado/:idPedido', Preparado)
+router.put('/admin/pedido/status/despachado/:idPedido', Despachado)
 
 //DELETE
 router.delete('/admin/insumos/insumodel/:id', eliminarInsumo)
