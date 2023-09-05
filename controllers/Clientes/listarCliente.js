@@ -1,13 +1,12 @@
 const db = require("../../database/db");
 
-const listarUsuario = (req, res) => {
-  // Consulta SQL para obtener todos los usuarios excepto los de rol 'cliente' (ID_Rol = 2)
+const listarCliente = (req, res) => {
+  // Consulta SQL para obtener todos los datos de los clientes con el correo
   const sql = `
-    SELECT U.idUsuario, U.correo, U.Estado, R.Nombre_Rol, C.ID_Cliente, C.Documento, C.Nombre, C.Apellido
+    SELECT U.idUsuario, C.ID_Cliente, U.correo, ID_Rol, C.Documento, C.Nombre, C.Apellido, C.Telefono, U.Estado
     FROM usuario U
-    LEFT JOIN rol R ON U.ID_Rol = R.ID_Rol
-    LEFT JOIN cliente C ON U.idUsuario = C.ID_Usuario 
-    WHERE U.ID_Rol <> 2
+    JOIN cliente C ON U.idUsuario = C.ID_Usuario 
+    WHERE U.ID_Rol = 2
     ORDER BY U.idUsuario ASC;
   `;
 
@@ -23,4 +22,4 @@ const listarUsuario = (req, res) => {
   });
 };
 
-module.exports = { listarUsuario };
+module.exports = { listarCliente };

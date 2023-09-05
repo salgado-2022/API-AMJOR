@@ -39,6 +39,9 @@ const { listarUsuario } = require('../controllers/Usuarios/listarUsuario');
 const { listarEdUsuarios, editarUsuario } = require('../controllers/Usuarios/editarUsuario');
 const { eliminarUsuario } = require('../controllers/Usuarios/eliminarUsuario');
 
+//CLIENTES
+const { listarCliente } = require('../controllers/Clientes/listarCliente');
+
 
 //INSUMOS
 const { listarInsumo } = require('../controllers/Insumos/listarInsumo');
@@ -91,6 +94,7 @@ router.get('/admin/insumos/insullamada/:id', listarEdInsumo)
 router.get('/admin/pedidos/success/', aceptar)
 router.get('/admin/pedidos/refused/', rechazar)
 router.get('/admin/usuario', listarUsuario)
+router.get('/admin/cliente', listarCliente)
 router.get('/admin/usuario/usullamada/:id', listarEdUsuarios);
 router.get('/admin/configuracion', listarConfiguracion);
 router.get('/admin/listpermisos', listarPermisos);
@@ -99,6 +103,7 @@ router.get('/search/:token', searchUser);
 router.get('/admin/search/permisos/:idUser', searchPermissions)
 router.get('/ventas/cliente/:token', listarVentasCliente)
 router.get('/validar/cliente/:token', RutaSegura)
+
 
 
 router.get('/admin/getinfo/totalpedidos', buscarCantidadPedidos)
