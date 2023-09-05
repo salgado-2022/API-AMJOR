@@ -10,7 +10,7 @@ const db = mysql.createPool({
     connectionLimit: 10, // Establecer el número máximo de conexiones en el pool
 
     // Opciones de configuración para la reconexión automática
-    acquireTimeout: 10000, // Tiempo de espera para adquirir la conexión en milisegundos
+    //acquireTimeout: 10000, // Tiempo de espera para adquirir la conexión en milisegundos
     connectionLimit: 10,   // Número máximo de conexiones en el pool
     waitForConnections: true, // Esperar si no hay conexiones disponibles en el pool
     queueLimit: 0, // Sin límite en la cola de conexiones pendientes
