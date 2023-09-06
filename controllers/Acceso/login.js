@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const postUsuario = (req, res) => {
 
     const sql = "SELECT idUsuario , correo, contrasena, rol.ID_Rol from usuario INNER JOIN rol ON usuario.ID_Rol = rol.ID_Rol WHERE Correo = ?;";
-
     db.query(sql, [req.body.Correo], (err, data) => {
 
         if (err) return res.status(500).json("Login Error in Server");
@@ -43,6 +42,7 @@ const postUsuario = (req, res) => {
                         });
                         res.status(200).json({
                             Status: "Success Admin",
+                            Token: token,
                             redirectToAdmin: `${process.env.DASHBOARD_REDIRECT_URL}`,
                         });
                     }
@@ -59,6 +59,7 @@ const postUsuario = (req, res) => {
 
 const searchUser = (req, res) => {
     const token = req.params.token;
+    console.log(token)
 
     if (!token) {
         return res.status(401).json({ error: "Token no proporcionado" });
@@ -71,7 +72,7 @@ const searchUser = (req, res) => {
         const { userId } = decodedToken;
 
         const sql =
-            "SELECT c.Nombre, c.Apellido, r.Nombre_Rol FROM cliente c INNER JOIN usuario u ON c.ID_Usuario = u.idUsuario INNER JOIN rol r on u.ID_Rol = r.ID_Rol WHERE u.idUsuario = ?";
+            "SELECT c.Nombre, c.Apellido, r.Nombre_Rol, c.img FROM cliente c INNER JOIN usuario u ON c.ID_Usuario = u.idUsuario INNER JOIN rol r on u.ID_Rol = r.ID_Rol WHERE u.idUsuario = ? ";
         db.query(sql, [userId], (err, result) => {
             if (err) {
                 return res.status(500).json({ error: "Error al consultar el usuario" });
