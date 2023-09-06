@@ -10,7 +10,7 @@ const searchUserInfoCheckout = (req, res) => {
 
     try {
         const sql =
-            `SELECT u.idUsuario, u.correo, c.ID_Cliente, c.Documento, c.Nombre, c.Apellido, c.Telefono
+            `SELECT u.idUsuario, u.correo, c.ID_Cliente, c.Documento, c.Nombre, c.Apellido, c.Telefono,  c.img
             FROM usuario u
             LEFT JOIN cliente c ON c.ID_Usuario = u.idUsuario 
             WHERE u.idUsuario = ?;
@@ -27,7 +27,7 @@ const searchUserInfoCheckout = (req, res) => {
 
         })
     } catch (error) {
-        return res.status(401).json({ error: "hola error nea" });
+        return res.status(401).json({ error: "Error en el servidor " });
     }
 };
 
