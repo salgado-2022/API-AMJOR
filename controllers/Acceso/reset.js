@@ -28,7 +28,7 @@ const validarCorreo = (req, res) => {
                 },
             });
 
-            const resetPasswordLink = `http://localhost:3000/restore/password?token=${token}`;
+            const resetPasswordLink = `${process.env.AMJOR_HOMEPAGE_URL}/restore/password?token=${token}`;
 
             let info =  transporter.sendMail({
                 from: '"AMJOR" <salgadojuam4@gmail.com>', // sender address
