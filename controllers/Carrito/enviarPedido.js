@@ -24,12 +24,12 @@ const enviarPedido = (req, res) => {
 
         // Recorrer las anchetas y guardar los detalles en la base de datos
         Anchetas.forEach((ancheta) => {
-            const { ID_Ancheta, Cantidad, Insumos } = ancheta;
+            const { ID_Ancheta, Cantidad, Insumos, PrecioUnitario } = ancheta;
 
             // Insertar detalles de la ancheta en la tabla `pedido_ancheta`
             const insertPedidoAnchetaQuery = "INSERT INTO pedido_ancheta (ID_Pedido, ID_Ancheta, Cantidad, Precio) VALUES (?, ?, ?, ?)";
-            const precio = 4000
-            const pedidoAnchetaValues = [pedidoID, ID_Ancheta, Cantidad, precio];
+            //const precio = PrecioUnitario
+            const pedidoAnchetaValues = [pedidoID, ID_Ancheta, Cantidad, PrecioUnitario];
 
             db.query(insertPedidoAnchetaQuery, pedidoAnchetaValues, (err, resultado) => {
 
@@ -39,10 +39,10 @@ const enviarPedido = (req, res) => {
 
                 // Insertar detalles de insumos en la tabla `pedido_insumos_ancheta`
                 Insumos.forEach((insumo) => {
-                    const { ID_Insumo, Cantidad: InsumoCantidad } = insumo;
+                    const { ID_Insumo, Cantidad: InsumoCantidad, Precio} = insumo;
                     const insertPedidoInsumoQuery = "INSERT INTO pedido_insumos_ancheta (ID_PedidoAnch, ID_Insumo, Cantidad, Precio) VALUES (?, ?, ?, ?)";
-                    const precio = 2000
-                    const pedidoInsumoValues = [ID_PedidoAnch, ID_Insumo, InsumoCantidad, precio];
+                    //const precio = 2000
+                    const pedidoInsumoValues = [ID_PedidoAnch, ID_Insumo, InsumoCantidad, Precio];
 
                     db.query(insertPedidoInsumoQuery, pedidoInsumoValues, (err) => {
                         if (err) console.error("Error al insertar detalle de pedido_insumos_ancheta:", err);
