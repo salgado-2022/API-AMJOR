@@ -8,7 +8,7 @@ const express = require("express")
 const cors = require('cors')
 const cookieParser = require("cookie-parser")
 const upload = require('./multerConfig');
-const UserImg = require('./multerUsers')
+// const UserImg = require('./multerUsers')
 const http = require('http');
 const db = require('../database/db') // Incluir db connection
 
@@ -43,7 +43,6 @@ class Server {
         this.app.use(cookieParser());
         this.app.use(express.static('public'));
         this.app.use(upload.single('image'));
-        this.app.use(UserImg.single('user'));
     }
 
     routes() {

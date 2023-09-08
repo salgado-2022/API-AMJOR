@@ -59,7 +59,6 @@ const postUsuario = (req, res) => {
 
 const searchUser = (req, res) => {
     const token = req.params.token;
-    console.log(token)
 
     if (!token) {
         return res.status(401).json({ error: "Token no proporcionado" });
