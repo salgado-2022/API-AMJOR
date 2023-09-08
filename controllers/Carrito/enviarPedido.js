@@ -1,21 +1,25 @@
 const db = require("../../database/db");
 
 const enviarPedido = (req, res) => {
-    const { 
+    const {
         ID_Cliente,
-        Pais, 
+        Pais,
         Municipio,
         Barrio,
-        Direccion_Entrega, 
-        Fecha_Entrega, 
+        Direccion_Entrega,
+        Fecha_Entrega,
         Notas_Adicionales,
-        Precio_Total, 
+        Precio_Total,
         Anchetas } = req.body;
 
     // Insertar el pedido en la tabla `pedido`
-    
+    let notas = Notas_Adicionales;
+    if (notas === undefined) {
+        notas = "Sin notas adicionales";
+    }
+
     const insertPedidoQuery = "INSERT INTO `pedido` (`ID_Cliente`, `Pais`, `Municipio`, `Barrio`, `Direccion_Entrega`, `Fecha_Entrega`, `Notas_Adicionales`, `Precio_Total`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    const pedidoValues = [ID_Cliente, Pais, Municipio, Barrio, Direccion_Entrega, Fecha_Entrega, Notas_Adicionales, Precio_Total];
+    const pedidoValues = [ID_Cliente, Pais, Municipio, Barrio, Direccion_Entrega, Fecha_Entrega, notas, Precio_Total];
 
     db.query(insertPedidoQuery, pedidoValues, (err, result) => {
         if (err) return res.json({ Error: "Error al crear el pedido en el servidor: " + err });
@@ -39,7 +43,7 @@ const enviarPedido = (req, res) => {
 
                 // Insertar detalles de insumos en la tabla `pedido_insumos_ancheta`
                 Insumos.forEach((insumo) => {
-                    const { ID_Insumo, Cantidad: InsumoCantidad, Precio} = insumo;
+                    const { ID_Insumo, Cantidad: InsumoCantidad, Precio } = insumo;
                     const insertPedidoInsumoQuery = "INSERT INTO pedido_insumos_ancheta (ID_PedidoAnch, ID_Insumo, Cantidad, Precio) VALUES (?, ?, ?, ?)";
                     //const precio = 2000
                     const pedidoInsumoValues = [ID_PedidoAnch, ID_Insumo, InsumoCantidad, Precio];
