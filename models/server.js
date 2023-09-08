@@ -43,7 +43,7 @@ class Server {
         this.app.use(cookieParser());
         this.app.use(express.static('public'));
         this.app.use(upload.single('image'));
-        this.app.use(UserImg.single('user'));
+        //this.app.use(UserImg.single('user'));
     }
 
     routes() {
