@@ -5,11 +5,6 @@ const salt = 10;
 const postCrearUsuario = (req, res) => {
   const { correo, contrasena, documento, nombre, apellido, telefono, rol } = req.body;
 
-  // Verificar si hay campos vacíos
-  if (!correo || !contrasena || !documento || !nombre || !apellido || !telefono || !rol) {
-    return res.json({ Error: "Por favor, complete todos los campos obligatorios." });
-  }
-
   bcrypt.hash(contrasena.toString(), salt, (err, hash) => {
     if (err) {
       return res.json({ Error: "Error en la contraseña" });
@@ -20,9 +15,9 @@ const postCrearUsuario = (req, res) => {
 
     // Consulta SQL para insertar un nuevo registro en la tabla usuario
     const sqlInsertUsuario =
-      "INSERT INTO usuario (`correo`, `contrasena`, `ID_Rol`) VALUES (?)";
+      "INSERT INTO usuario (`correo`, `contrasena`, `ID_Rol`) VALUES (?, ?, ?)";
 
-    db.query(sqlInsertUsuario, [usuarioValues], (err, usuarioResult) => {
+    db.query(sqlInsertUsuario, usuarioValues, (err, usuarioResult) => {
       if (err) {
         console.log(err);
         return res.json({ Error: "Error insertando datos en el servidor" });
@@ -33,9 +28,9 @@ const postCrearUsuario = (req, res) => {
 
       // Consulta SQL para insertar un nuevo registro en la tabla cliente
       const sqlInsertCliente =
-        "INSERT INTO cliente (`Documento`, `Nombre`, `Apellido`, `Telefono`, `ID_Usuario`) VALUES (?)";
+        "INSERT INTO cliente (`Documento`, `Nombre`, `Apellido`, `Telefono`, `ID_Usuario`) VALUES (?, ?, ?, ?, ?)";
 
-      db.query(sqlInsertCliente, [clienteValues], (err, clienteResult) => {
+      db.query(sqlInsertCliente, clienteValues, (err, clienteResult) => {
         if (err) {
           console.log(err);
           return res.json({ Error: "Error insertando datos en el servidor" });
