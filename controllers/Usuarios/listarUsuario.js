@@ -1,13 +1,12 @@
 const db = require("../../database/db");
 
 const listarUsuario = (req, res) => {
-  // Consulta SQL para obtener todos los usuarios excepto los de rol 'cliente' (ID_Rol = 2)
+  // Consulta SQL para obtener todos los usuarios con sus roles
   const sql = `
     SELECT U.idUsuario, U.correo, U.Estado, R.Nombre_Rol, C.ID_Cliente, C.Documento, C.Nombre, C.Apellido
     FROM usuario U
     LEFT JOIN rol R ON U.ID_Rol = R.ID_Rol
     LEFT JOIN cliente C ON U.idUsuario = C.ID_Usuario 
-    WHERE U.ID_Rol <> 2
     ORDER BY U.idUsuario ASC;
   `;
 
