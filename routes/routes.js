@@ -40,6 +40,7 @@ const { postCrearUsuario } = require('../controllers/Usuarios/crearUsuario');
 const { listarUsuario } = require('../controllers/Usuarios/listarUsuario');
 const { listarEdUsuarios, editarUsuario } = require('../controllers/Usuarios/editarUsuario');
 const { eliminarUsuario } = require('../controllers/Usuarios/eliminarUsuario');
+const {ConsultarInfoUser} = require('../controllers/Usuarios/Perfil')
 
 //CLIENTES
 const { listarCliente } = require('../controllers/Clientes/listarCliente');
@@ -106,6 +107,7 @@ router.get('/search/:token', searchUser);
 router.get('/admin/search/permisos/:idUser', searchPermissions)
 router.get('/ventas/cliente/:token', listarVentasCliente)
 router.get('/validar/cliente/:token', RutaSegura)
+router.get('/perfil/user/:id', ConsultarInfoUser)
 
 
 router.get('/admin/getinfo/ventasmes', VentasGrafica)
