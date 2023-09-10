@@ -60,7 +60,7 @@ const { verInsumos } = require('../controllers/Anchetas/verInsumos');
 const { listarEdAncheta, editarAncheta } = require('../controllers/Anchetas/editarAncheta');
 
 const { validarCorreo, actualizarPassword } = require('../controllers/Acceso/reset');
-const { validarToken } = require('../controllers/Validations/TokenValidator');
+const { ValidarAdmin } = require('../controllers/Validations/TokenValidator');
 
 //Pedidos
 const { aceptar } = require('../controllers/Pedido/Aceptar');
@@ -109,6 +109,7 @@ router.get('/admin/search/permisos/:idUser', searchPermissions)
 router.get('/ventas/cliente/:token', listarVentasCliente)
 router.get('/validar/cliente/:token', RutaSegura)
 router.get('/perfil/user/:id', ConsultarInfoUser)
+router.get('/validar/admin/acceso/:token', ValidarAdmin)
 
 
 router.get('/admin/getinfo/ventasmes', VentasGrafica)
@@ -128,7 +129,6 @@ router.post('/register', postRegistro)
 router.post('/crearInsumo', postInsumo)
 router.post('/crearAncheta', postAncheta)
 router.post('/recuperar', validarCorreo)
-router.post('/recovery', validarToken)
 router.post('/crearUsuario', postCrearUsuario)
 router.post('/crearRol', postCrearRol)
 
