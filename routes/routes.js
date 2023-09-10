@@ -23,6 +23,7 @@ const { buscarCantidadUsuarios } = require('../controllers/Dashboard/searchUsuar
 const { buscarPedidosPendientes } = require('../controllers/Dashboard/searchPedidosPendientes');
 const { buscarTotalVentas } = require('../controllers/Dashboard/searchTotalVentas');
 const {VentasGrafica} = require('../controllers/Dashboard/ventas')
+const {MasVendidas} = require('../controllers/Dashboard/masVendidas')
 
 
 //CONFIGURACION
@@ -108,6 +109,7 @@ router.get('/validar/cliente/:token', RutaSegura)
 
 
 router.get('/admin/getinfo/ventasmes', VentasGrafica)
+router.get('/admin/getinfo/anchetas/masvendidas',MasVendidas)
 router.get('/admin/getinfo/totalpedidos', buscarCantidadPedidos)
 router.get('/admin/getinfo/totalusuarios', buscarCantidadUsuarios)
 router.get('/admin/getinfo/pedidospendientes', buscarPedidosPendientes)
