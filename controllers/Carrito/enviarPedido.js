@@ -43,10 +43,17 @@ const enviarPedido = (req, res) => {
 
                 // Insertar detalles de insumos en la tabla `pedido_insumos_ancheta`
                 Insumos.forEach((insumo) => {
-                    const { ID_Insumo, Cantidad: InsumoCantidad, Precio } = insumo;
+                    const { ID_Insumo, Cantidad: InsumoCantidad, Precio, Precio_Total } = insumo;
+
+                    // Validar si el precio 1 (Cuando se modifica la ancheta en el carrito) es indefinido.
+                    precio_definitivo = Precio
+                    if (Precio === undefined) {
+                        precio_definitivo = Precio_Total
+                    }
+
                     const insertPedidoInsumoQuery = "INSERT INTO pedido_insumos_ancheta (ID_PedidoAnch, ID_Insumo, Cantidad, Precio) VALUES (?, ?, ?, ?)";
                     //const precio = 2000
-                    const pedidoInsumoValues = [ID_PedidoAnch, ID_Insumo, InsumoCantidad, Precio];
+                    const pedidoInsumoValues = [ID_PedidoAnch, ID_Insumo, InsumoCantidad, precio_definitivo];
 
                     db.query(insertPedidoInsumoQuery, pedidoInsumoValues, (err) => {
                         if (err) console.error("Error al insertar detalle de pedido_insumos_ancheta:", err);
