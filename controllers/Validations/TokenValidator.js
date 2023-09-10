@@ -1,24 +1,38 @@
-const jwt = require('jsonwebtoken');
+const db = require("../../database/db");
+const jwt = require("jsonwebtoken");
 
-const validarToken = (req, res) => {
-    const token = req.body.token;
 
-    // Verificar si el token está presente
+const ValidarAdmin = (req, res) => {
+
+    const token = req.params.token;
     if (!token) {
-        return res.status(400).json({ error: 'Token no proporcionado' });
+        return res.status(401).json({ error: "Token no proporcionado" });
     }
+
     try {
         // Verificar y decodificar el token
-        const decodedToken = jwt.verify(token, 'secretKey');
-        // Obtener la fecha de expiración del token
+        const decodedToken = jwt.verify(token, "Hola");
         const { userId } = decodedToken;
-        
-        // El token es válido y no ha expirado
-        return res.status(200).json({ mensaje: 'Token válido', id:userId });
-    } catch (error) {
-        // Error al verificar el token (por ejemplo, token inválido o manipulado)
-        return res.status(401).json({ error: error });
-    }
-};
 
-module.exports = { validarToken };
+        const sql = "SELECT r.Nombre_Rol from usuario u INNER JOIN  rol r ON u.ID_Rol = r.ID_Rol WHERE u.idUsuario = ?"
+
+        db.query(sql, [userId], (err, result) => {
+            if (err) return res.status(500).json({ error: "Error al hacer la consulta" })
+
+            if (result.length === 0) return res.status(500).json({ error: "El usuario no existe" })
+
+            if (result[0].Nombre_Rol != "Cliente") {
+                return res.status(200).json({ Status: "Ok", result })
+            }
+
+            res.status(200).json({ Status: "Acceso denegado" })
+
+        })
+    }
+    catch {
+        return res.status(401).json({ error: "Error en el sistema" });
+    }
+}
+
+
+module.exports = { ValidarAdmin }
