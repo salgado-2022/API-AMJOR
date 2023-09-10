@@ -54,7 +54,6 @@ const { listarAncheta } = require('../controllers/Anchetas/listarAncheta');
 const { postAncheta } = require('../controllers/Anchetas/crearAncheta');
 const { verInsumos } = require('../controllers/Anchetas/verInsumos');
 const { listarEdAncheta, editarAncheta } = require('../controllers/Anchetas/editarAncheta');
-const { eliminarAncheta } = require('../controllers/Anchetas/eliminarAncheta');
 
 const { validarCorreo, actualizarPassword } = require('../controllers/Acceso/reset');
 const { validarToken } = require('../controllers/Validations/TokenValidator');
@@ -74,6 +73,8 @@ const { listarVentasCliente } = require('../controllers/Ventas/listarVentasClien
 //Validaciones
 const { validarDocumento } = require('../controllers/Acceso/validarRegistros');
 const { validarEmail } = require('../controllers/Acceso/validarRegistros');
+const { validarAncheta } = require('../controllers/Anchetas/validarAncheta');
+const { validarInsumo } = require('../controllers/Insumos/validarInsumo');
 const { RutaSegura } = require('../controllers/Validations/ValidarCliente')
 
 
@@ -130,6 +131,8 @@ router.post('/enviarPedido', enviarPedido)
 //POST VALIDACIONES
 router.post('/validate/documento', validarDocumento)
 router.post('/validate/email', validarEmail)
+router.post('/validate/ancheta', validarAncheta)
+router.post('/validate/insumo', validarInsumo)
 
 
 
@@ -148,7 +151,6 @@ router.put('/admin/pedido/status/despachado/:idPedido', Despachado)
 
 //DELETE
 router.delete('/admin/insumos/insumodel/:id', eliminarInsumo)
-router.delete('/admin/anchetas/anchetadel/:id', eliminarAncheta)
 router.delete('/admin/usuarios/Usuariodel/:id', eliminarUsuario)
 router.delete('/admin/configuracion/Confidel/:id', eliminarRol);
 
