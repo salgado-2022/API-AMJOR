@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const postUsuario = (req, res) => {
 
-    const sql = "SELECT idUsuario , correo, contrasena, rol.ID_Rol from usuario INNER JOIN rol ON usuario.ID_Rol = rol.ID_Rol WHERE Correo = ?;";
+    const sql = "SELECT u.idUsuario , u.correo, u.contrasena, rol.ID_Rol, u.Estado from usuario u INNER JOIN rol ON u.ID_Rol = rol.ID_Rol WHERE Correo = ?";
     db.query(sql, [req.body.Correo], (err, data) => {
 
         if (err) return res.status(500).json("Login Error in Server");
@@ -18,33 +18,45 @@ const postUsuario = (req, res) => {
                 if (response) {
 
                     if (data[0].ID_Rol === 2) {
-                        const token = jwt.sign({ userId: data[0].idUsuario }, "Hola", { expiresIn: "1d" });
 
-                        // Configura la cookie
-                        res.cookie("token", token, {
-                            // domain: ".amjor.shop", // Permite compartir cookies entre subdominios
-                            // secure: true, // Solo envía la cookie a través de HTTPS
-                            // httpOnly: false, // Previene acceso desde JavaScript
-                            // sameSite: "none", // Permite compartir cookies en solicitudes entre sitios
-                        });
+                        if (data[0].Estado == 1) {
+                            const token = jwt.sign({ userId: data[0].idUsuario }, "Hola", { expiresIn: "1d" });
 
-                        res.status(200).json({
-                            Status: "Success client",
-                            redirectTo: `${process.env.LANDING_REDIRECT_URL}`,
-                        });
+                            // Configura la cookie
+                            res.cookie("token", token, {
+                                // domain: ".amjor.shop", // Permite compartir cookies entre subdominios
+                                // secure: true, // Solo envía la cookie a través de HTTPS
+                                // httpOnly: false, // Previene acceso desde JavaScript
+                                // sameSite: "none", // Permite compartir cookies en solicitudes entre sitios
+                            });
+
+                            res.status(200).json({
+                                Status: "Success client",
+                                redirectTo: `${process.env.LANDING_REDIRECT_URL}`,
+                            });
+                        } else {
+                            res.json({ Status: "off" });
+
+                        }
                     } else {
-                        const token = jwt.sign({ userId: data[0].idUsuario }, "Hola", { expiresIn: "1d" });
-                        res.cookie("token", token, {
-                            // domain: ".amjor.shop", // Permite compartir cookies entre subdominios
-                            // secure: true, // Solo envía la cookie a través de HTTPS
-                            // httpOnly: false, // Previene acceso desde JavaScript
-                            // sameSite: "none", // Permite compartir cookies en solicitudes entre sitios
-                        });
-                        res.status(200).json({
-                            Status: "Success Admin",
-                            Token: token,
-                            redirectToAdmin: `${process.env.DASHBOARD_REDIRECT_URL}`,
-                        });
+                        if (data[0].Estado == 1) {
+                            const token = jwt.sign({ userId: data[0].idUsuario }, "Hola", { expiresIn: "1d" });
+                            res.cookie("token", token, {
+                                // domain: ".amjor.shop", // Permite compartir cookies entre subdominios
+                                // secure: true, // Solo envía la cookie a través de HTTPS
+                                // httpOnly: false, // Previene acceso desde JavaScript
+                                // sameSite: "none", // Permite compartir cookies en solicitudes entre sitios
+                            });
+                            res.status(200).json({
+                                Status: "Success Admin",
+                                Token: token,
+                                redirectToAdmin: `${process.env.DASHBOARD_REDIRECT_URL}`,
+                            });
+                        } else {
+                            res.json({ Status: "off" });
+
+                        }
+
                     }
                 } else {
                     return res.json({ Error: "Password not matched" });
