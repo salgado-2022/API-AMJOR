@@ -1,7 +1,6 @@
 const db = require("../../database/db");
 
 const listarCliente = (req, res) => {
-  // Consulta SQL para obtener todos los datos de los clientes con el correo
   const sql = `
     SELECT U.idUsuario, C.ID_Cliente, U.correo, ID_Rol, C.Documento, C.Nombre, C.Apellido, C.Telefono, U.Estado
     FROM usuario U

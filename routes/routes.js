@@ -45,6 +45,7 @@ const { ActualizarPerfil } = require('../controllers/Usuarios/Perfil')
 
 //CLIENTES
 const { listarCliente } = require('../controllers/Clientes/listarCliente');
+const { editarCliente} = require('../controllers/Clientes/editarCliente');
 
 
 //INSUMOS
@@ -150,6 +151,7 @@ router.patch('/actualizar', actualizarPassword)
 router.put('/admin/anchetas/anchetaedit/:id', editarAncheta)
 router.put('/admin/insumos/insumoedit/:id', editarInsumo)
 router.put('/admin/usuario/usuariarioedit/:id', editarUsuario);
+router.put('/admin/cliente/clienteedit/:id', editarCliente);
 router.put('/admin/configuracion/confiedit/:id', editarRol);
 router.put('/admin/pedido/status/preparacion/:idPedido', Preparacion)
 router.put('/admin/pedido/status/preparado/:idPedido', Preparado)
