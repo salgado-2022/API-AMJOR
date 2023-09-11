@@ -2,7 +2,7 @@ const db = require("../../database/db");
 
 const listarCliente = (req, res) => {
   const sql = `
-    SELECT U.idUsuario, C.ID_Cliente, U.correo, ID_Rol, C.Documento, C.Nombre, C.Apellido, C.Telefono, U.Estado
+    SELECT U.idUsuario, C.ID_Cliente, U.correo, ID_Rol, C.Documento, C.Nombre, C.Apellido, C.Telefono, U.Estado, C.img AS foto
     FROM usuario U
     JOIN cliente C ON U.idUsuario = C.ID_Usuario 
     WHERE U.ID_Rol = 2
