@@ -4,10 +4,9 @@ const bcrypt = require("bcrypt");
 const listarEdUsuarios = (req, res) => {
   const id = req.params.id;
   const sql = `
-    SELECT u.*, r.ID_Rol, c.ID_Cliente, c.Nombre AS Nombre_Cliente, c.Documento AS Documento_Cliente, 
+    SELECT u.*, c.ID_Cliente, c.Nombre AS Nombre_Cliente, c.Documento AS Documento_Cliente, 
     c.Telefono AS Telefono_Cliente, c.Apellido AS Apellido_Cliente
     FROM usuario u
-    INNER JOIN rol r ON u.ID_Rol = r.ID_Rol
     INNER JOIN cliente c ON c.ID_Usuario = u.idUsuario
     WHERE u.idUsuario = ?;
   `;
@@ -21,7 +20,7 @@ const listarEdUsuarios = (req, res) => {
   });
 };
 
-const editarUsuario = (req, res) => {
+const editarCliente = (req, res) => {
   const id = req.params.id;
   const nuevoDocumento = req.body.documento;
   const nuevoApellido = req.body.apellido;
@@ -29,14 +28,13 @@ const editarUsuario = (req, res) => {
   const nuevoNombre = req.body.nombre;
   const nuevoCorreo = req.body.correo;
   let nuevaContrasena = req.body.contrasena;
-  const nuevoID_Rol = req.body.ID_Rol;
   const nuevoEstado = req.body.estado;
 
 if (!nuevaContrasena) {
-   ActualizarUsuario = "UPDATE usuario SET ID_Rol = ?, correo = ?, Estado = ? WHERE idUsuario = ?";
-  values = [ nuevoID_Rol,nuevoCorreo, nuevoEstado, id ]
+   ActualizarUsuario = "UPDATE usuario SET correo = ?, Estado = ? WHERE idUsuario = ?";
+  values = [ nuevoCorreo, nuevoEstado, id ]
 } else {
-   ActualizarUsuario = "UPDATE usuario SET ID_Rol = ?, correo = ?, contrasena = ?, Estado = ? WHERE idUsuario = ?";
+   ActualizarUsuario = "UPDATE usuario SET correo = ?, contrasena = ?, Estado = ? WHERE idUsuario = ?";
   bcrypt.hash(nuevaContrasena, 10, (err, hash) => {
     if (err) {
       console.log(err);
@@ -45,7 +43,7 @@ if (!nuevaContrasena) {
     nuevaContrasena = hash;
 
   }); 
-  values = [ nuevoID_Rol,nuevoCorreo,nuevaContrasena, nuevoEstado, id ]
+  values = [ nuevoCorreo,nuevaContrasena, nuevoEstado, id ]
 }
 
 db.query(ActualizarUsuario, values, (err, result) => {
@@ -66,10 +64,9 @@ db.query(ActualizarClientes, [ nuevoDocumento,nuevoNombre,nuevoApellido, nuevoTe
 
  // Después de la actualización, obtener los datos actualizados
  const sql = `
- SELECT u.*, r.ID_Rol, c.ID_Cliente, c.Nombre AS Nombre_Cliente, c.Documento AS Documento_Cliente, 
+ SELECT u.*, c.ID_Cliente, c.Nombre AS Nombre_Cliente, c.Documento AS Documento_Cliente, 
  c.Telefono AS Telefono_Cliente, c.Apellido AS Apellido_Cliente
  FROM usuario u
- INNER JOIN rol r ON u.ID_Rol = r.ID_Rol
  INNER JOIN cliente c ON c.ID_Usuario = u.idUsuario
  WHERE u.idUsuario = ?;
 `;
@@ -86,4 +83,4 @@ db.query(sql, [id], (err, result) => {
 
 };
 
-module.exports = { listarEdUsuarios, editarUsuario };
+module.exports = { listarEdUsuarios, editarCliente };
