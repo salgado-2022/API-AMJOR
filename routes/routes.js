@@ -69,6 +69,7 @@ const { DetallePedido } = require('../controllers/Pedido/Detalle');
 const { DetalleAncheta } = require('../controllers/Pedido/DetalleInsumo');
 const { Preparacion, Preparado, Despachado } = require('../controllers/Pedido/ActualizarStatus');
 const { listarPedidos } = require('../controllers/Pedido/listar')
+const { creado } = require('../controllers/Pedido/Creado')
 
 //Ventas
 const { listarVentas } = require('../controllers/Ventas/listarVentas')
@@ -98,6 +99,7 @@ router.get('/admin/anchetas/anchellamada/:id', listarEdAncheta)
 router.get('/admin/insumos/insullamada/:id', listarEdInsumo)
 router.get('/admin/pedidos/success/', aceptar)
 router.get('/admin/pedidos/refused/', rechazar)
+router.get('/pedido/creado/', creado)
 router.get('/admin/usuario', listarUsuario)
 router.get('/admin/cliente', listarCliente)
 router.get('/admin/usuario/usullamada/:id', listarEdUsuarios);
