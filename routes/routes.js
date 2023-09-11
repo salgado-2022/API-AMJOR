@@ -22,8 +22,8 @@ const { buscarCantidadPedidos } = require('../controllers/Dashboard/searchPedido
 const { buscarCantidadUsuarios } = require('../controllers/Dashboard/searchUsuarios');
 const { buscarPedidosPendientes } = require('../controllers/Dashboard/searchPedidosPendientes');
 const { buscarTotalVentas } = require('../controllers/Dashboard/searchTotalVentas');
-const {VentasGrafica} = require('../controllers/Dashboard/ventas')
-const {MasVendidas} = require('../controllers/Dashboard/masVendidas')
+const { VentasGrafica } = require('../controllers/Dashboard/ventas')
+const { MasVendidas } = require('../controllers/Dashboard/masVendidas')
 
 
 //CONFIGURACION
@@ -40,7 +40,8 @@ const { postCrearUsuario } = require('../controllers/Usuarios/crearUsuario');
 const { listarUsuario } = require('../controllers/Usuarios/listarUsuario');
 const { listarEdUsuarios, editarUsuario } = require('../controllers/Usuarios/editarUsuario');
 const { eliminarUsuario } = require('../controllers/Usuarios/eliminarUsuario');
-const {ConsultarInfoUser} = require('../controllers/Usuarios/Perfil')
+const { ConsultarInfoUser } = require('../controllers/Usuarios/Perfil')
+const { ActualizarPerfil } = require('../controllers/Usuarios/Perfil')
 
 //CLIENTES
 const { listarCliente } = require('../controllers/Clientes/listarCliente');
@@ -60,7 +61,7 @@ const { verInsumos } = require('../controllers/Anchetas/verInsumos');
 const { listarEdAncheta, editarAncheta } = require('../controllers/Anchetas/editarAncheta');
 
 const { validarCorreo, actualizarPassword } = require('../controllers/Acceso/reset');
-const { validarToken } = require('../controllers/Validations/TokenValidator');
+const { ValidarAdmin } = require('../controllers/Validations/TokenValidator');
 
 //Pedidos
 const { aceptar } = require('../controllers/Pedido/Aceptar');
@@ -109,10 +110,11 @@ router.get('/admin/search/permisos/:idUser', searchPermissions)
 router.get('/ventas/cliente/:token', listarVentasCliente)
 router.get('/validar/cliente/:token', RutaSegura)
 router.get('/perfil/user/:id', ConsultarInfoUser)
+router.get('/validar/admin/acceso/:token', ValidarAdmin)
 
 
 router.get('/admin/getinfo/ventasmes', VentasGrafica)
-router.get('/admin/getinfo/anchetas/masvendidas',MasVendidas)
+router.get('/admin/getinfo/anchetas/masvendidas', MasVendidas)
 router.get('/admin/getinfo/totalpedidos', buscarCantidadPedidos)
 router.get('/admin/getinfo/totalusuarios', buscarCantidadUsuarios)
 router.get('/admin/getinfo/pedidospendientes', buscarPedidosPendientes)
@@ -128,7 +130,6 @@ router.post('/register', postRegistro)
 router.post('/crearInsumo', postInsumo)
 router.post('/crearAncheta', postAncheta)
 router.post('/recuperar', validarCorreo)
-router.post('/recovery', validarToken)
 router.post('/crearUsuario', postCrearUsuario)
 router.post('/crearRol', postCrearRol)
 
@@ -155,6 +156,7 @@ router.put('/admin/configuracion/confiedit/:id', editarRol);
 router.put('/admin/pedido/status/preparacion/:idPedido', Preparacion)
 router.put('/admin/pedido/status/preparado/:idPedido', Preparado)
 router.put('/admin/pedido/status/despachado/:idPedido', Despachado)
+router.put('/user/perfil/update/:id', ActualizarPerfil)
 
 //DELETE
 router.delete('/admin/insumos/insumodel/:id', eliminarInsumo)
