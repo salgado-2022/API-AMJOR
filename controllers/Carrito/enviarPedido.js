@@ -63,7 +63,7 @@ const enviarPedido = (req, res) => {
 
         });
 
-        return res.json({ Status: "Pedido creado y enviado exitosamente.", pedidoID: pedidoID });
+        return res.json({ Status: "Pedido creado y enviado exitosamente.", pedidoID: pedidoID, clienteID: ID_Cliente });
     });
 };
 

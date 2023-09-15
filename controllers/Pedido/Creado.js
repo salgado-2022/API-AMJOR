@@ -2,70 +2,80 @@ const db = require("../../database/db");
 const nodemailer = require('nodemailer');
 
 
-const aceptar = (req, res) => {
+const creado = (req, res) => {
+
     const { pedido, cliente } = req.query;
+    const selectSql = "SELECT c.Nombre, u.correo,p.Fecha_Entrega, p.Direccion_Entrega, p.Municipio, p.Barrio FROM pedido p INNER JOIN cliente c ON p.ID_Cliente = c.ID_Cliente INNER JOIN usuario u ON c.ID_Usuario = u.idUsuario WHERE p.ID_Cliente = ? AND p.ID_Pedido=?;";
 
-    const updateSql = "UPDATE pedido SET Estado = 4 WHERE ID_Pedido = ?";
-
-    db.query(updateSql, [pedido], (updateError, updateResult) => {
-        if (updateError) {
-            return res.status(500).json({ Error: "Error updating order status" });
+    db.query(selectSql, [cliente, pedido], async (selectError, result) => {
+        if (selectError) {
+            return res.status(500).json({ Error: "Server query error" });
         }
 
-        const selectSql = "SELECT c.Nombre, u.correo,p.Fecha_Entrega, p.Direccion_Entrega, p.Municipio, p.Barrio FROM pedido p INNER JOIN cliente c ON p.ID_Cliente = c.ID_Cliente INNER JOIN usuario u ON c.ID_Usuario = u.idUsuario WHERE p.ID_Cliente = ? AND p.ID_Pedido=?;";
+        if (result.length > 0) {
+            const correo = result[0].correo;
+            const fecha = result[0].Fecha_Entrega
+            const direccion = result[0].Direccion_Entrega
+            const municipio = result[0].Municipio
+            const barrio = result[0].Barrio
 
-        db.query(selectSql, [cliente, pedido], async (selectError, result) => {
-            if (selectError) {
-                return res.status(500).json({ Error: "Server query error" });
-            }
+            const sql3 = "SELECT p.ID_PedidoAnch, a.NombreAncheta, p.Cantidad, p.Precio * p.Cantidad AS Total FROM pedido_ancheta p INNER JOIN ancheta a ON p.ID_Ancheta = a.ID_Ancheta INNER JOIN pedido Pe ON p.ID_Pedido = Pe.ID_Pedido WHERE p.ID_Pedido = ?"
+            db.query(sql3, [pedido], async (error, resultado) => {
+                if (error) {
 
-            if (result.length > 0) {
-                const correo = result[0].correo;
-                const fecha = result[0].Fecha_Entrega
-                const direccion= result[0].Direccion_Entrega
-                const municipio = result[0].Municipio
-                const barrio = result[0].Barrio
+                    res.status(500).json({ Error: "server query error" })
+                }
 
-                const sql3 = "SELECT p.ID_PedidoAnch, a.NombreAncheta, p.Cantidad, p.Precio * p.Cantidad AS Total FROM pedido_ancheta p INNER JOIN ancheta a ON p.ID_Ancheta = a.ID_Ancheta INNER JOIN pedido Pe ON p.ID_Pedido = Pe.ID_Pedido WHERE p.ID_Pedido = ?"
-                db.query(sql3, [pedido], async (error, resultado) => {
-                    if (error) {
+                const formatDate = (dateString) => {
+                    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                    const date = new Date(dateString);
+                    return date.toLocaleDateString(undefined, options);
+                };
+                let totalSum = 0; // Variable para almacenar la suma total
 
-                        res.status(500).json({ Error: "server query error" })
-                    }
-                    
-                    const formatDate = (dateString) => {
-                        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-                        const date = new Date(dateString);
-                        return date.toLocaleDateString(undefined, options);
-                    };
-                    const productos = resultado.map((producto) => {
-                        return `
+                const productos = resultado.map((producto) => {
+                    // Formatear el precio con la configuración regional colombiana
+                    const formattedTotal = new Intl.NumberFormat('es-CO', {
+                        style: 'currency',
+                        currency: 'COP'
+                    }).format(producto.Total);
+
+                    // Eliminar los ceros decimales adicionales
+                    const formattedTotalWithoutDecimals = formattedTotal.replace(',00', '');
+                    totalSum += producto.Total;
+                    return `
                         <tr>
-                        <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">
-                            ${producto.NombreAncheta}
-                        </td>
-                        <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">
-                            ${producto.Total}
-                        </td>
-                    </tr>
-                        `;
-                    });
-                    const transporter = nodemailer.createTransport({
-                        host: "smtp.gmail.com",
-                        port: 465,
-                        secure: true,
-                        auth: {
-                            user: 'salgadojuam4@gmail.com',
-                            pass: 'vbhfxllcuvnmkcfq'
-                        },
-                    });
+                            <td width="75%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">
+                                ${producto.NombreAncheta}
+                            </td>
+                            <td width="25%" align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;">
+                                ${formattedTotalWithoutDecimals}
+                            </td>
+                        </tr>
+                    `;
+                });
+                // Formatear la suma total como moneda colombiana
+                const formattedTotalSum = new Intl.NumberFormat('es-CO', {
+                    style: 'currency',
+                    currency: 'COP'
+                }).format(totalSum);
 
-                    let info = await transporter.sendMail({
-                        from: '"Pedido Aceptado" <salgadojuam4@gmail.com>', // sender address
-                        to: correo, // list of receivers
-                        subject: "Pedido Aceptado Correctamente", // Subject line
-                        text: "Pedido Aceptado", // plain text body
-                        html: `<!DOCTYPE html>
+                const transporter = nodemailer.createTransport({
+                    host: "smtp.gmail.com",
+                    port: 465,
+                    secure: true,
+                    auth: {
+                        user: 'salgadojuam4@gmail.com',
+                        pass: 'vbhfxllcuvnmkcfq'
+                    },
+                });
+
+                let info = await transporter.sendMail({
+                    from: '"Resumen de compra" <salgadojuam4@gmail.com>', // sender address
+                    to: correo, // list of receivers
+                    subject: "Resumen de compra", // Subject line
+                    text: "Su pedido fue creado", // plain text body
+                    html: `<!DOCTYPE html>
                         <html>
                         
                         <head>
@@ -146,7 +156,7 @@ const aceptar = (req, res) => {
                             <!-- HIDDEN PREHEADER TEXT -->
                             <div
                                 style="display: none; font-size: 1px; color: #fefefe; line-height: 1px; font-family: Open Sans, Helvetica, Arial, sans-serif; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden;">
-                                Tu pedido fue aceptado correctamente y será despachado en la fecha que nos asignaste.
+                                Tu pedido está en proceso de aprobación
                             </div>
                         
                             <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -248,8 +258,9 @@ const aceptar = (req, res) => {
                                                                 style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding-top: 10px;">
                                                                 <p
                                                                     style="font-size: 16px; font-weight: 400; line-height: 24px; color: #777777;">
-                                                                    Tu pedido fue aceptado correctamente y será despachado en la fecha que nos
-                                                                    asignaste.
+                                                                    Tu pedido está en proceso de aprobación
+                                                                    <br/>
+                                                                    Una vez sea aprobado se te enviará un correo notificando la aprobación
                                                                 </p>
                                                             </td>
                                                         </tr>
@@ -280,7 +291,8 @@ const aceptar = (req, res) => {
                                                                         </td>
                                                                         <td width="25%" align="left"
                                                                             style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 24px; padding: 10px; border-top: 3px solid #eeeeee; border-bottom: 3px solid #eeeeee;">
-                                                                            $115.00
+                                                                            ${formattedTotalSum}
+                                                                            
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -393,7 +405,7 @@ const aceptar = (req, res) => {
                                                                     style="font-size: 14px; font-weight: 400; line-height: 20px; color: #777777;">
                                                                     Este correo tiene información importante de tu compra por lo que
                                                                     recomendamos que no lo borres. Si tiene alguna duda comunícate con nosotros
-                                                                    a la línea de servicio al cliente 01 8000 42 22 22 para ayudarte lo antes
+                                                                    a la línea de servicio al cliente 350 264 2180 para ayudarte lo antes
                                                                     posible..
                                                                 </p>
                                                             </td>
@@ -418,15 +430,17 @@ const aceptar = (req, res) => {
                         </body>
                         
                         </html>`, // html body
-                    });
-                })
+                });
+            })
 
-                return res.status(200).json({ Success: true });
-            } else {
-                return res.status(200).json({ Success: false });
-            }
-        });
+            return res.status(200).json({ Success: true });
+        } else {
+            return res.status(200).json({ Success: false });
+        }
     });
-};
 
-module.exports = { aceptar };
+}
+
+module.exports = {
+    creado
+}
