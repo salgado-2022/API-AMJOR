@@ -80,7 +80,8 @@ const { validarDocumento } = require('../controllers/Acceso/validarRegistros');
 const { validarEmail } = require('../controllers/Acceso/validarRegistros');
 const { validarAncheta } = require('../controllers/Anchetas/validarAncheta');
 const { validarInsumo } = require('../controllers/Insumos/validarInsumo');
-const { RutaSegura } = require('../controllers/Validations/ValidarCliente')
+const { RutaSegura } = require('../controllers/Validations/ValidarCliente');
+const { validarRol } = require('../controllers/Configuración/validarRol');
 
 
 
@@ -140,6 +141,7 @@ router.post('/validate/documento', validarDocumento)
 router.post('/validate/email', validarEmail)
 router.post('/validate/ancheta', validarAncheta)
 router.post('/validate/insumo', validarInsumo)
+router.post('/validate/rol', validarRol)
 
 
 
