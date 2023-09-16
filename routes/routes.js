@@ -82,7 +82,7 @@ const { validarEmail } = require('../controllers/Acceso/validarRegistros');
 const { validarAncheta } = require('../controllers/Anchetas/validarAncheta');
 const { validarInsumo } = require('../controllers/Insumos/validarInsumo');
 const { RutaSegura } = require('../controllers/Validations/ValidarCliente');
-const { validarRol } = require('../controllers/Configuración/validarRol');
+const {Token} = require('../controllers/Validations/Token')
 
 
 
@@ -135,8 +135,9 @@ router.post('/crearAncheta', postAncheta)
 router.post('/recuperar', validarCorreo)
 router.post('/crearUsuario', postCrearUsuario)
 router.post('/crearRol', postCrearRol)
-
 router.post('/enviarPedido', enviarPedido)
+router.post('/recovery', Token)
+
 
 //POST VALIDACIONES
 router.post('/validate/documento', validarDocumento)
