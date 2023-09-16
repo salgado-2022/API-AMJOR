@@ -83,6 +83,7 @@ const { validarAncheta } = require('../controllers/Anchetas/validarAncheta');
 const { validarInsumo } = require('../controllers/Insumos/validarInsumo');
 const { RutaSegura } = require('../controllers/Validations/ValidarCliente');
 const {Token} = require('../controllers/Validations/Token')
+const { validarRol } = require('../controllers/Configuración/validarRol');
 
 
 
