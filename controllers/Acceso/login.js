@@ -83,7 +83,7 @@ const searchUser = (req, res) => {
         const { userId } = decodedToken;
 
         const sql =
-            "SELECT c.Nombre, c.Apellido, r.Nombre_Rol, c.img FROM cliente c INNER JOIN usuario u ON c.ID_Usuario = u.idUsuario INNER JOIN rol r on u.ID_Rol = r.ID_Rol WHERE u.idUsuario = ? ";
+            "SELECT c.Nombre, c.Apellido, r.Nombre_Rol, c.img, u.correo FROM cliente c INNER JOIN usuario u ON c.ID_Usuario = u.idUsuario INNER JOIN rol r on u.ID_Rol = r.ID_Rol WHERE u.idUsuario = ? ";
         db.query(sql, [userId], (err, result) => {
             if (err) {
                 return res.status(500).json({ error: "Error al consultar el usuario" });
