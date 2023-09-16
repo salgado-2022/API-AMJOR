@@ -144,6 +144,7 @@ router.post('/validate/documento', validarDocumento)
 router.post('/validate/email', validarEmail)
 router.post('/validate/ancheta', validarAncheta)
 router.post('/validate/insumo', validarInsumo)
+router.post('/validate/rol', validarRol)
 
 
 

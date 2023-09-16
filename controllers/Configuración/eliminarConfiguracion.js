@@ -9,10 +9,10 @@ const eliminarRol = (req, res) => {
 
   // Verifica si el rol se está utilizando en la tabla "usuario"
   const verificarUsoEnUsuariosSQL = "SELECT COUNT(*) as count FROM usuario WHERE ID_Rol = ?";
-  
+
   db.query(verificarUsoEnUsuariosSQL, [id], (err, countResult) => {
     if (err) {
-      console.log(err);
+      console.error(err); // Cambiado de console.log a console.error para resaltar errores
       return res.status(500).json({ error: "Error en el servidor al verificar el uso del rol" });
     }
 
@@ -25,19 +25,19 @@ const eliminarRol = (req, res) => {
 
     // Si no hay usuarios que utilizan este rol, procede con la eliminación
     const eliminarPermisosSQL = "DELETE FROM permiso_x_rol WHERE ID_Rol = ?";
-  
+
     db.query(eliminarPermisosSQL, [id], (err, permisosResult) => {
       if (err) {
-        console.log(err);
+        console.error(err);
         return res.status(500).json({ error: "Error en el servidor al eliminar los permisos" });
       }
 
       // Luego, elimina el registro en la tabla rol
       const eliminarRolSQL = "DELETE FROM rol WHERE ID_Rol = ?";
-    
+
       db.query(eliminarRolSQL, [id], (err, rolResult) => {
         if (err) {
-          console.log(err);
+          console.error(err);
           return res.status(500).json({ error: "Error en el servidor al eliminar el rol" });
         }
 
